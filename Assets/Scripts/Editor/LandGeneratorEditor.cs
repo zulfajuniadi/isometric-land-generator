@@ -17,6 +17,7 @@ namespace TilemapGeneratorEditor
 
         public override void OnInspectorGUI()
         {
+            EditorGUI.BeginChangeCheck();
             base.OnInspectorGUI();
             if (GUILayout.Button("Generate"))
             {
@@ -25,6 +26,10 @@ namespace TilemapGeneratorEditor
             if (GUILayout.Button("Generate Random"))
             {
                 generator.Seed = Random.Range(-9999, 9999);
+                generator.Generate();
+            }
+            if (EditorGUI.EndChangeCheck())
+            {
                 generator.Generate();
             }
         }

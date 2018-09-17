@@ -99,7 +99,8 @@ public class CellularAutomata
         int gridLength,
         int fillPercentage = 50,
         int iterations = 5,
-        int seed = 100
+        int seed = 100,
+        bool inverse = false
     )
     {
 
@@ -114,15 +115,30 @@ public class CellularAutomata
             for (int y = 0; y < gridLength; y++)
             {
                 var key = gridUtils.GetKey(x, y);
-                int result = 0;
-                map.TryGetValue(key, out result);
+                map.TryGetValue(key, out int result);
                 if (
+                    x == 0 ||
+                    x == gridWidth - 1 ||
+                    y == 0 ||
+                    y == gridLength - 1 ||
+                    x == 1 ||
+                    x == gridWidth - 2 ||
+                    y == 1 ||
+                    y == gridLength - 2
+                )
+                {
+                    if (inverse)
+                    {
+                        input.TryAdd(key, 0);
+                    }
+                    else if (result == 1)
+                    {
+                        input.TryAdd(key, 1);
+                    }
+                }
+                else if (
                     result == 1 &&
                     (
-                        x == 0 ||
-                        x == gridWidth - 1 ||
-                        y == 0 ||
-                        y == gridLength - 1 ||
                         pseudoRandom.Next(0, 100) <= fillPercentage
                     )
                 )
@@ -158,6 +174,14 @@ public class CellularAutomata
                 }
             }
         }
+
+        //     for (int k = 0; k < keyLength; k++)
+        //     {
+        //         if (output.TryGetValue(k, out int result))
+        //         {
+        //             output.TryAdd(k, result == 1 ? 0 : 1);
+        //         }
+        //     }
 
         // be sure to dispose the results!!!
         return output;
