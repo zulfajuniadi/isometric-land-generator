@@ -25,7 +25,7 @@ namespace TilemapGeneratorEditor
             }
             if (GUILayout.Button("Generate Random"))
             {
-                generator.Seed = Random.Range(-9999, 9999);
+                generator.Seed = Random.Range(-9999f, 9999f);
                 generator.Generate();
             }
             if (EditorGUI.EndChangeCheck())
