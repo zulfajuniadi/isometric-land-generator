@@ -83,18 +83,18 @@ namespace TilemapGenerator
             {
                 item.Value.Clear();
             }
-            BuildPositions();
             Vector2 position = new Vector2(
                 (baseOffset.x / chunkSize - baseOffset.y / chunkSize) * halfSize,
                 (baseOffset.x / chunkSize + baseOffset.y / chunkSize) * halfSize / 2f
             );
             GameObject.transform.localPosition = position;
+            BuildPositions();
             Tilemap.SetTiles(positions, tiles);
-            GameObject.SetActive(true);
             foreach (var item in spawnerPositions)
             {
                 provider.Generator.CachedRenderers[item.Key].AddInstances(item.Value);
             }
+            GameObject.SetActive(true);
         }
 
         public void Disable()
@@ -113,8 +113,8 @@ namespace TilemapGenerator
             GenerateNoiseMap(randomOffset + rect.min);
             int halfMap = chunkSize / 2;
             Vector4 flat = new Vector4(0, 0, 0, 0);
-            float offsetX = (rect.min.x - rect.min.y) / 2f;
-            float offsetY = (rect.min.y + rect.min.x) / 4f;
+            float offsetX = GameObject.transform.localPosition.x;
+            float offsetY = GameObject.transform.localPosition.y - halfMap / 2;
             var firstBiome = cachedBiomes.GetEnumerator();
             firstBiome.MoveNext();
             int bottomHeight = Mathf.RoundToInt(firstBiome.Current.Key);
@@ -188,11 +188,11 @@ namespace TilemapGenerator
                         {
                             float textureCount = (float) item.Value.Item1;
                             float index = Mathf.Round((float) prng.NextDouble() * textureCount) / textureCount + (0.5f * 1f / textureCount);
-                            float mapX = x - Mathf.InverseLerp(0f, 0.1f, (float) prng.NextDouble());
-                            float mapY = y - Mathf.InverseLerp(0f, 0.1f, (float) prng.NextDouble());
+                            float mapX = x + (float) prng.NextDouble() - 0.5f;
+                            float mapY = y + (float) prng.NextDouble() - 0.5f;
                             float worldX = offsetX + ((mapX - mapY) / 2f);
-                            float worldY = offsetY + ((mapX + mapY) / 4f) + (c0 - 1) * 0.25f;
-                            spawnerPositions[item.Key].Add(new Vector4(worldX, worldY - (chunkSize / 4f - 1f), 0, index));
+                            float worldY = offsetY + ((mapX + mapY) / 4f) + highest * 0.25f;
+                            spawnerPositions[item.Key].Add(new Vector4(worldX, worldY, 0, index));
                         }
                     }
                     positions[key] = new Vector3Int(x - halfMap, y - halfMap, noiseMap[x, y]);
