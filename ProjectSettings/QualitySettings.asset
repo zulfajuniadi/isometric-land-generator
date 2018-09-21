@@ -21,12 +21,12 @@ QualitySettings:
     blendWeights: 1
     textureQuality: 0
     anisotropicTextures: 0
-    antiAliasing: 4
+    antiAliasing: 0
     softParticles: 0
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 0
-    vSyncCount: 1
+    vSyncCount: 0
     lodBias: 0.4
     maximumLODLevel: 0
     streamingMipmapsActive: 0

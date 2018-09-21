@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TilemapGenerator.Settings;
 using Random = UnityEngine.Random;
 
 namespace TilemapGenerator
@@ -33,6 +34,7 @@ namespace TilemapGenerator
         public int ChunkSize = 64;
         [Range(9, 25)]
         public int ActiveTilemaps = 15;
+        public AnimationCurve TerrainCurve = new AnimationCurve();
         public BiomeConfig[] BiomeConfigs = new BiomeConfig[0];
         public Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>> CachedBiomes = new Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>>();
         public Transform Output;
@@ -42,9 +44,10 @@ namespace TilemapGenerator
 
         private void OnEnable()
         {
-            // Application.targetFrameRate = 0;
-            // QualitySettings.antiAliasing = 0;
-            // QualitySettings.vSyncCount = 0;
+#if UNITY_EDITOR
+            Application.targetFrameRate = 0;
+            QualitySettings.vSyncCount = 0;
+#endif
             chunkProvider = new ChunkProvider(this);
             Generate();
         }
@@ -60,7 +63,7 @@ namespace TilemapGenerator
                 foreach (var spawner in biome.Spawners)
                 {
                     if (spawner.Spawer == null) continue;
-                    RegisterSpawner(spawner.Spawer);
+                    RegisterSpawner(spawner.Probability, spawner.Spawer);
                 }
             }
             Random.InitState(Seed.GetHashCode());
@@ -69,6 +72,7 @@ namespace TilemapGenerator
                 Random.Range(-999999, 999999)
             );
             StartCoroutine(chunkProvider.Tick());
+
         }
 
         private void Clear()
@@ -85,11 +89,11 @@ namespace TilemapGenerator
                 DestroyImmediate(Output.GetChild(0).gameObject);
         }
 
-        private void RegisterSpawner(InstancedSpawnerConfiguration configuration)
+        private void RegisterSpawner(float probability, InstancedSpawnerConfiguration configuration)
         {
             if (!CachedRenderers.ContainsKey(configuration.GetHashCode()))
             {
-                var renderer = new InstancedRenderer(configuration.PackedTexture, configuration.Material, configuration.MeshSize);
+                var renderer = new InstancedRenderer((int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, configuration.Material, configuration.MeshSize);
                 CachedRenderers.Add(configuration.GetHashCode(), renderer);
             }
         }

@@ -4,6 +4,20 @@ using UnityEngine;
 
 namespace TilemapGenerator
 {
+
+    public struct TileComparator : IEqualityComparer<Vector4>
+    {
+        public bool Equals(Vector4 v1, Vector4 v2)
+        {
+            return v1.x == v2.x && v1.y == v2.y;
+        }
+
+        public int GetHashCode(Vector4 obj)
+        {
+            return (int) (obj.x * obj.y);
+        }
+    }
+
     public class InstancedRenderer : System.IDisposable
     {
         private Mesh mesh;
@@ -17,66 +31,19 @@ namespace TilemapGenerator
         private HashSet<Vector4> instances = new HashSet<Vector4>();
         private Vector4[] instancesCache;
 
-        public InstancedRenderer(Texture3D packedTexture, Material material, float meshSize)
+        public InstancedRenderer(int capacity, Texture3D packedTexture, Material material, float meshSize)
         {
             this.packedTexture = packedTexture;
             float height = (float) packedTexture.width / (float) packedTexture.height * meshSize;
             float width = 1 * meshSize;
-            this.mesh = CreateMesh(height, width);
+            this.mesh = Utils.CreatePlane(height, width);
             this.material = Object.Instantiate(material);
             this.material.SetTexture("_MainTex3D", packedTexture);
             argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
-        }
-
-        private Mesh CreateMesh(float width, float length)
-        {
-            Mesh mesh = new Mesh();
-            int resX = 2;
-            int resY = 2;
-
-            Vector3[] vertices = new Vector3[resX * resY];
-            for (int y = 0; y < resY; y++)
-            {
-                float yPos = ((float) y / (resY - 1) - .5f) * length;
-                for (int x = 0; x < resX; x++)
-                {
-                    float xPos = ((float) x / (resX - 1) - .5f) * width;
-                    vertices[x + y * resX] = new Vector3(xPos, yPos, 0);
-                }
-            }
-
-            Vector2[] uvs = new Vector2[vertices.Length];
-            for (int v = 0; v < resY; v++)
-            {
-                for (int u = 0; u < resX; u++)
-                {
-                    uvs[u + v * resX] = new Vector2((float) u / (resX - 1), (float) v / (resY - 1));
-                }
-            }
-
-            int nbFaces = (resX - 1) * (resY - 1);
-            int[] triangles = new int[nbFaces * 6];
-            int t = 0;
-            for (int face = 0; face < nbFaces; face++)
-            {
-                // Retrieve lower left corner from face ind
-                int i = face % (resX - 1) + (face / (resY - 1) * resX);
-
-                triangles[t++] = i + resX;
-                triangles[t++] = i + 1;
-                triangles[t++] = i;
-
-                triangles[t++] = i + resX;
-                triangles[t++] = i + resX + 1;
-                triangles[t++] = i + 1;
-            }
-
-            mesh.vertices = vertices;
-            mesh.uv = uvs;
-            mesh.triangles = triangles;
-
-            mesh.RecalculateBounds();
-            return mesh;
+            positionBuffer = new ComputeBuffer(capacity, 16);
+            instances = new HashSet<Vector4>(new Vector4[capacity], new TileComparator());
+            instancesCache = new Vector4[capacity];
+            instances.Clear();
         }
 
         public void Tick()
@@ -95,15 +62,15 @@ namespace TilemapGenerator
         {
             cachedInstanceCount = instances.Count;
             if (
-                instancesCache == null ||
-                positionBuffer == null ||
                 instancesCache.Length < cachedInstanceCount
             )
             {
-                if (positionBuffer != null)
-                    positionBuffer.Dispose();
-                positionBuffer = new ComputeBuffer(cachedInstanceCount, 16);
                 instancesCache = new Vector4[cachedInstanceCount];
+                if (positionBuffer.count < cachedInstanceCount)
+                {
+                    positionBuffer.Dispose();
+                    positionBuffer = new ComputeBuffer(cachedInstanceCount, 16);
+                }
             }
             int i = 0;
             foreach (var v in instances)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace TilemapGenerator
+namespace TilemapGenerator.Settings
 {
 
     [CreateAssetMenu(fileName = "Tile Configuration", menuName = "Tilemap Generator/Tile Config", order = 0)]
