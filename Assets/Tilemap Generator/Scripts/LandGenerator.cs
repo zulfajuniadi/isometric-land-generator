@@ -44,8 +44,10 @@ namespace TilemapGenerator
 
         private void OnEnable()
         {
+#if UNITY_EDITOR
             Application.targetFrameRate = 0;
             QualitySettings.vSyncCount = 0;
+#endif
             chunkProvider = new ChunkProvider(this);
             Generate();
         }
