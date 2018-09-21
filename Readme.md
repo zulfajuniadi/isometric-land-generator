@@ -32,6 +32,7 @@ Open up the Example scene inside the Example folder and press play
 3. Noise Scale: Flatness of the terrain
 4. Active Tilemaps: How many chunks are active at once
 5. Biome configs: The configuration of the biome
+6. Terrain Curve: The curve to be used when interpolating the results of the perlin noise sample
 
 ## Biome Configs:
 
@@ -70,9 +71,10 @@ The instanced renderer takes a list of 2D sprites that are packed into a 3D text
 1. Sprites: The sprites you want to pack
 2. Packed Texture: The result 3D texture
 3. Mesh Size: The size of the generated Mesh on the map
-4. Is Edge Only: If this is true, then the sprite will only be generated on slopes (like the bamboo around the river).
-5. Material: A reference to the Instanced Material
-6. Click on `Generate Packed Image` button if you add / remove / update the sprites list. That will generate a new 3D texture and assign it to the `Packed Texture` field.
+4. On Flat: If this is true, then the sprite will be spawned on flat terrain.
+5. On Slopes: If this is true, then the sprite will be spawned on slopes (like the bamboo around the lake).
+6. Material: A reference to the Instanced Material
+7. Click on `Generate Packed Image` button if you add / remove / update the sprites list. That will generate a new 3D texture and assign it to the `Packed Texture` field.
 
 ## Tile Generator Tool
 
