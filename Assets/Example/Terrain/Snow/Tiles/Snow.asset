@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e532181c3d462e408c28e0108ae9a98, type: 3}
+  m_Name: Snow
+  m_EditorClassIdentifier: 
+  _0000: {fileID: 11400000, guid: b9619f5dfa60e6b4fbeb1101166eb6eb, type: 2}
+  _1000: {fileID: 11400000, guid: 7a489b5cf9453be4e8cb0fa6884da4bb, type: 2}
+  _0100: {fileID: 11400000, guid: a91d5ce42fd3af84cb18183e6ebecf1c, type: 2}
+  _0010: {fileID: 11400000, guid: a87871f006d43174a938ea08e5bedc55, type: 2}
+  _0001: {fileID: 11400000, guid: 17f712e738267bf4397331ae385cc57e, type: 2}
+  _1100: {fileID: 11400000, guid: 538eaa69de776164a8200defc1553a3f, type: 2}
+  _0110: {fileID: 11400000, guid: 27a9b8931f00d424198e15bfceca546d, type: 2}
+  _0011: {fileID: 11400000, guid: 073f28668171b8f4e866cbfbe6faf632, type: 2}
+  _1001: {fileID: 11400000, guid: 6041c2a3dc6bab4418e40ee2c8bd142e, type: 2}
+  _1110: {fileID: 11400000, guid: 2476ed30321d37847b41f242769d81db, type: 2}
+  _0111: {fileID: 11400000, guid: c31dfb30f98e18b49a5d5ef34d070b12, type: 2}
+  _1011: {fileID: 11400000, guid: ded113f32a657de41a51675a49411048, type: 2}
+  _1101: {fileID: 11400000, guid: c7d132c693612bd46aeb983d763bdf63, type: 2}
+  _1010: {fileID: 11400000, guid: 50e773e677974e843b2b6beadb94ae07, type: 2}
+  _0101: {fileID: 11400000, guid: b9e98444baeeabd41bc6d317233ec4db, type: 2}
+  _5150: {fileID: 11400000, guid: bd8aa233a8cdca44ebf5534d788f163a, type: 2}
+  _5051: {fileID: 11400000, guid: 40d40b617f7bc3c4ebac17ae77da9636, type: 2}
+  _0515: {fileID: 11400000, guid: f7b70ae7fb26b01459c106fd67597e9e, type: 2}
+  _1505: {fileID: 11400000, guid: 5e159ed69fcb1794b8463e54dc6f7502, type: 2}

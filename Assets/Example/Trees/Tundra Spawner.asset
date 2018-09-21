@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59dd863f7c41a34a8d6ca8c42ad44d2, type: 3}
+  m_Name: Tundra Spawner
+  m_EditorClassIdentifier: 
+  Sprites:
+  - {fileID: 21300000, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  - {fileID: 21300006, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  - {fileID: 21300004, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  - {fileID: 21300008, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  - {fileID: 21300014, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  - {fileID: 21300020, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  - {fileID: 21300022, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  - {fileID: 21300018, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  - {fileID: 21300010, guid: ff7e298d663e92441895ad009d280c89, type: 3}
+  PackedTexture: {fileID: 11700000, guid: ef29247946d4dcb4a8fa4a632762c835, type: 2}
+  MeshSize: 0.75
+  OnEdgeOnly: 0
+  Material: {fileID: 2100000, guid: 76c5b912726b4c64fa99ffabded9f92d, type: 2}
