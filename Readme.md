@@ -13,7 +13,7 @@ Unity Infinite Isometric Terrain Generator
 2. Uses the new Unity isometric tilemap
 3. Tool included to create your own terrain set
 4. Near-zero allocation (after all active tilemaps has been generated)
-5. Uses `Graphics.DrawMeshInstancedIndirect` to ~~draw a crap tonnne~~ lots of trees at once
+5. Uses `Graphics.DrawMeshInstancedIndirect` to draw ~~a crap ton~~ lots of trees at once
 6. Recycles inactive chunks
 7. Simple randomized spawners (for trees, shrubs, etc)
 8. Fast terrain generation (< 16 ms per chunk)
@@ -21,7 +21,7 @@ Unity Infinite Isometric Terrain Generator
 
 ## Quick Start:
 
-Open up the Example scene inside the Example folder 
+Open up the Example scene inside the Example folder and press play 
 
 ## Settings:
 
@@ -38,9 +38,9 @@ Open up the Example scene inside the Example folder
 [![Biome Configs](https://i.gyazo.com/8ea76d7b586b2135660135bd44616103.png)](https://gyazo.com/8ea76d7b586b2135660135bd44616103)
 
 1. Tile config: The tile configuration
-2. Height: 0-1 `float` value of the heigt of this biome
+2. Height: 0-1 `float` value of the height of this biome
 3. Spawners - Spawner: The Spawner config
-4. Spawners - Probability: The probability of the texture being spawned
+4. Spawners - Probability: The probability of the spawner being spawned
 
 ## Tile Config:
 
@@ -60,7 +60,6 @@ Which you would set to this:
 It can be counter intuitive at times but it makes sense once you see it generated.
 
 As the field type is `TileBase` you can extend the `Tilemap.Tilebase` class to create your own tiles. I've downloaded the `AnimatedTile` class from [Unity's 2D Extras repository](https://github.com/Unity-Technologies/2d-extras/).
-
 
 ## Spawner Config:
 
@@ -108,7 +107,7 @@ Once you've created the tiles, you'll have to import them as sprites with these 
 2. Sprite mode: Single
 3. Pixels Per Unit: 63
 
-Some tiles will need a custom pivot to look right on the map. Refer to the import settings on the tiles inside the Examples folder.
+Some tiles will need a custom pivot to look right on the map. Refer to the import settings on the examples tiles I've already created.
 
 ## Future improvements 
 
