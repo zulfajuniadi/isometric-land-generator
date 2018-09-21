@@ -2,48 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TilemapGenerator
+namespace TilemapGenerator.Behaviours
 {
-    public class ChunkProvider
+    [ExecuteInEditMode]
+    public class ChunkProvider : MonoBehaviour
     {
         public Vector2Int RandomOffset;
         public LandGenerator Generator;
+        public GameObject ChunkPrefab;
 
         private Dictionary<Vector2Int, TerrainChunk> chunks = new Dictionary<Vector2Int, TerrainChunk>();
         private Queue<Vector2Int> chunkQueue = new Queue<Vector2Int>();
         private Queue<TerrainChunk> freeChunkQueue = new Queue<TerrainChunk>();
-        private Transform output;
-        private bool HasWarmedUp = false;
+        private float lastTick;
 
-        public ChunkProvider(
-            LandGenerator generator
-        )
+        public void Boot()
         {
-            this.Generator = generator;
-            this.output = generator.Output;
-        }
+            while (Generator.Output.childCount > 0)
+                DestroyImmediate(Generator.Output.GetChild(0).gameObject);
+            chunks.Clear();
+            freeChunkQueue.Clear();
+            chunkQueue.Clear();
 
-        public IEnumerator Tick()
-        {
-            if (!HasWarmedUp)
+            for (int i = 0; i < Generator.ActiveTilemaps * 1.5; i++)
             {
-                for (int i = 0; i < Generator.ActiveTilemaps * 1.5; i++)
-                {
-                    var chunk = new TerrainChunk(this, new Vector2Int(0, 0));
-                    chunk.Disable();
-                    freeChunkQueue.Enqueue(chunk);
-                }
-                HasWarmedUp = true;
-            }
-            WaitForSeconds wait = new WaitForSeconds(0.1f);
-            while (true)
-            {
-                yield return wait;
-                yield return DetectBoundries();
+                var chunk = CreateNewChunk(new Vector2Int(0, 0));
+                freeChunkQueue.Enqueue(chunk);
             }
         }
 
-        private IEnumerator DetectBoundries()
+        private void Update()
         {
             Vector2Int caddyPosition = GetCaddyPosition();
 
@@ -101,7 +89,6 @@ namespace TilemapGenerator
             while (chunkQueue.Count > 0)
             {
                 CreateChunk(chunkQueue.Dequeue());
-                yield return null;
             }
 
             while (chunks.Count > Generator.ActiveTilemaps)
@@ -125,7 +112,6 @@ namespace TilemapGenerator
                     freeChunkQueue.Enqueue(farthestChunk);
                     chunks.Remove(key);
                 }
-                yield return null;
             }
         }
 
@@ -134,8 +120,8 @@ namespace TilemapGenerator
             int halfMap = Generator.ChunkSize / 2;
             int quartMap = Generator.ChunkSize / 4;
             Vector2Int caddyPosition = Vector2Int.zero;
-            caddyPosition.x = -Mathf.RoundToInt((output.position.x / halfMap + output.position.y / quartMap) / 2);
-            caddyPosition.y = -Mathf.RoundToInt((output.position.y / quartMap - (output.position.x / halfMap)) / 2);
+            caddyPosition.x = -Mathf.RoundToInt((Generator.Output.position.x / halfMap + Generator.Output.position.y / quartMap) / 2);
+            caddyPosition.y = -Mathf.RoundToInt((Generator.Output.position.y / quartMap - (Generator.Output.position.x / halfMap)) / 2);
             return caddyPosition;
         }
 
@@ -150,16 +136,39 @@ namespace TilemapGenerator
             }
             else
             {
-                var chunk = new TerrainChunk(this, mapPosition);
+                TerrainChunk chunk = CreateNewChunk(mapPosition);
                 chunks.Add(mapPosition, chunk);
                 return chunk;
             }
         }
 
-        public void Clear()
+        private TerrainChunk CreateNewChunk(Vector2Int mapPosition)
         {
-            chunks.Clear();
-            chunkQueue.Clear();
+            GameObject go = Instantiate(ChunkPrefab);
+            go.hideFlags = HideFlags.DontSave;
+            TerrainChunk chunk = go.GetComponent<TerrainChunk>();
+            chunk.transform.parent = Generator.Output;
+            chunk.Provider = this;
+            go.name = "Disabled";
+            go.SetActive(false);
+            return chunk;
         }
+
+        // public void Clear()
+        // {
+        //     foreach (var chunk in chunks)
+        //     {
+        //         chunk.Value.Dispose();
+        //     }
+        //     while (freeChunkQueue.Count > 0)
+        //     {
+        //         freeChunkQueue.Dequeue().Dispose();
+        //     }
+        //     chunks.Clear();
+        //     chunkQueue.Clear();
+        //     freeChunkQueue.Clear();
+        //     while (Generator.Output.childCount > 0)
+        //         DestroyImmediate(Generator.Output.GetChild(0).gameObject);
+        // }
     }
 }

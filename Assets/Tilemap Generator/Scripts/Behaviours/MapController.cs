@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TilemapGenerator
+namespace TilemapGenerator.Behaviours
 {
     public class MapController : MonoBehaviour
     {

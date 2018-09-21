@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 using TilemapGenerator.Settings;
 using Random = UnityEngine.Random;
 
-namespace TilemapGenerator
+namespace TilemapGenerator.Behaviours
 {
     [System.Serializable]
     public class SpawnerProbability
@@ -14,6 +14,7 @@ namespace TilemapGenerator
         public InstancedSpawnerConfiguration Spawer;
         [Range(0, 1)]
         public float Probability = 0.5f;
+        public int MaxCount = -1;
     }
 
     [System.Serializable]
@@ -38,17 +39,19 @@ namespace TilemapGenerator
         public BiomeConfig[] BiomeConfigs = new BiomeConfig[0];
         public Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>> CachedBiomes = new Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>>();
         public Transform Output;
+        public ChunkProvider ChunkProvider;
 
         public Dictionary<int, InstancedRenderer> CachedRenderers = new Dictionary<int, InstancedRenderer>();
-        private ChunkProvider chunkProvider;
 
         private void OnEnable()
         {
 #if UNITY_EDITOR
-            Application.targetFrameRate = 0;
-            QualitySettings.vSyncCount = 0;
+            if (Application.isPlaying)
+            {
+                Application.targetFrameRate = 0;
+                QualitySettings.vSyncCount = 0;
+            }
 #endif
-            chunkProvider = new ChunkProvider(this);
             Generate();
         }
 
@@ -67,26 +70,21 @@ namespace TilemapGenerator
                 }
             }
             Random.InitState(Seed.GetHashCode());
-            chunkProvider.RandomOffset = new Vector2Int(
+            ChunkProvider.Boot();
+            ChunkProvider.RandomOffset = new Vector2Int(
                 Random.Range(-999999, 999999),
                 Random.Range(-999999, 999999)
             );
-            StartCoroutine(chunkProvider.Tick());
-
         }
 
         private void Clear()
         {
-            StopAllCoroutines();
-            chunkProvider.Clear();
             CachedBiomes.Clear();
             foreach (var renderer in CachedRenderers)
             {
                 renderer.Value.Dispose();
             }
             CachedRenderers.Clear();
-            while (Output.childCount > 0)
-                DestroyImmediate(Output.GetChild(0).gameObject);
         }
 
         private void RegisterSpawner(float probability, InstancedSpawnerConfiguration configuration)
