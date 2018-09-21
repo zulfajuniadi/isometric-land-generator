@@ -18,4 +18,6 @@ MonoBehaviour:
   - {fileID: 21300016, guid: ff7e298d663e92441895ad009d280c89, type: 3}
   PackedTexture: {fileID: 11700000, guid: 1b4538d6a87862541b5c97c6a5cbcb3d, type: 2}
   MeshSize: 1
+  OnFlat: 1
+  OnSlopes: 1
   Material: {fileID: 2100000, guid: 76c5b912726b4c64fa99ffabded9f92d, type: 2}

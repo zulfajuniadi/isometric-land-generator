@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using TilemapGenerator;
+using TilemapGenerator.Behaviours;
 
 namespace TilemapGeneratorEditor
 {

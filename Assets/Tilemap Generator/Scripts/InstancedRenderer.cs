@@ -23,6 +23,7 @@ namespace TilemapGenerator
         private Mesh mesh;
         private Material material;
         private Vector3 offset;
+        private Vector3 lastOffset;
         private Texture3D packedTexture;
         private int cachedInstanceCount = -1;
         private ComputeBuffer positionBuffer;
@@ -30,6 +31,7 @@ namespace TilemapGenerator
         private uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
         private HashSet<Vector4> instances = new HashSet<Vector4>();
         private Vector4[] instancesCache;
+        private bool isDirty = false;
 
         public InstancedRenderer(int capacity, Texture3D packedTexture, Material material, float meshSize)
         {
@@ -44,6 +46,7 @@ namespace TilemapGenerator
             instances = new HashSet<Vector4>(new Vector4[capacity], new TileComparator());
             instancesCache = new Vector4[capacity];
             instances.Clear();
+            lastOffset = Vector3.one * float.MaxValue;
         }
 
         public void Tick()
@@ -71,7 +74,11 @@ namespace TilemapGenerator
                     positionBuffer.Dispose();
                     positionBuffer = new ComputeBuffer(cachedInstanceCount, 16);
                 }
+                isDirty = true;
             }
+            if (!isDirty) return;
+            lastOffset = offset;
+            isDirty = false;
             int i = 0;
             foreach (var v in instances)
             {
@@ -99,22 +106,26 @@ namespace TilemapGenerator
             if (offset != this.offset)
             {
                 this.offset = offset;
+                isDirty = true;
             }
         }
 
         public void AddInstances(IEnumerable<Vector4> instances)
         {
             this.instances.UnionWith(instances);
+            isDirty = true;
         }
 
         public void RemoveInstances(IEnumerable<Vector4> instances)
         {
             this.instances.ExceptWith(instances);
+            isDirty = true;
         }
 
         public void Clear()
         {
             instances.Clear();
+            isDirty = true;
         }
 
         public void Dispose()

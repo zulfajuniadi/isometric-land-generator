@@ -152,6 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 534669905}
   - component: {fileID: 534669904}
+  - component: {fileID: 534669903}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -159,6 +160,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &534669903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4366c210f4afcf4d85b3b72699b9635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LandGenerator: {fileID: 741563761}
+  MainCamera: {fileID: 534669904}
+  MinMaxZoom: {x: 2, y: 20}
 --- !u!20 &534669904
 Camera:
   m_ObjectHideFlags: 0
@@ -169,7 +185,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.53333336, g: 0.68235296, b: 0.7411765, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -185,7 +201,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -226,7 +242,7 @@ GameObject:
   - component: {fileID: 741563760}
   - component: {fileID: 741563759}
   - component: {fileID: 741563761}
-  - component: {fileID: 741563762}
+  - component: {fileID: 741563763}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -273,8 +289,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88678861dd7742b8bc6bb69daff4e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Seed: 513803.62
-  Height: 44
+  Seed: 236841.1
+  Height: 35
   NoiseScale: 90
   ChunkSize: 64
   ActiveTilemaps: 12
@@ -282,58 +298,63 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.002720721
-      value: 0.22557074
-      inSlope: 0.046570048
-      outSlope: 0.046570048
+      time: 0
+      value: 0.1
+      inSlope: -3.408717
+      outSlope: -3.408717
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.23385188
+      outWeight: 0.1359343
     - serializedVersion: 3
-      time: 0.68544614
-      value: 0.46074262
-      inSlope: 1.305195
-      outSlope: 1.305195
+      time: 0.5320374
+      value: 0.28442955
+      inSlope: 0.8388139
+      outSlope: 0.8388139
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.30960396
+      inWeight: 0.25388667
+      outWeight: 0.30398422
     - serializedVersion: 3
-      time: 1.0027161
-      value: 1
-      inSlope: 2
-      outSlope: 2
+      time: 1.0108948
+      value: 1.1452332
+      inSlope: 1.3814512
+      outSlope: 1.3814512
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.24245968
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   BiomeConfigs:
   - TileConfig: {fileID: 11400000, guid: 60d1dc8df8b00224c825fcc9b111d76a, type: 2}
-    Height: 0.24
+    Height: 0.1
     Spawners:
     - Spawer: {fileID: 11400000, guid: 16ddc45c7aa18c047ad6e3c3146d12da, type: 2}
       Probability: 0.4
+      MaxCount: -1
   - TileConfig: {fileID: 11400000, guid: 902ce549eab1bc347aa15d373183703d, type: 2}
-    Height: 0.7
+    Height: 0.75
     Spawners:
     - Spawer: {fileID: 11400000, guid: 86b0630af638365409fb464a1067cffd, type: 2}
       Probability: 0.4
+      MaxCount: -1
   - TileConfig: {fileID: 11400000, guid: 541123d6632726e4cbd7d443ba77eb30, type: 2}
-    Height: 0.85
+    Height: 0.93
     Spawners:
     - Spawer: {fileID: 11400000, guid: 07c795bb357550e4fa6832dc1ba6e6ab, type: 2}
-      Probability: 0.6
+      Probability: 0.7
+      MaxCount: -1
   - TileConfig: {fileID: 11400000, guid: 3ee0bb21010a2964eaaaeaab6b0fcc9e, type: 2}
     Height: 1
     Spawners:
     - Spawer: {fileID: 11400000, guid: 75660ec99309bc14a94df10d2e154353, type: 2}
       Probability: 0.2
+      MaxCount: -1
   Output: {fileID: 257278593}
---- !u!114 &741563762
+  ChunkProvider: {fileID: 741563763}
+--- !u!114 &741563763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -342,9 +363,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 741563758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4366c210f4afcf4d85b3b72699b9635, type: 3}
+  m_Script: {fileID: 11500000, guid: e954d977bc17d6c4bbef278b0def9368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LandGenerator: {fileID: 741563761}
-  MainCamera: {fileID: 534669904}
-  MinMaxZoom: {x: 2, y: 15}
+  RandomOffset: {x: -713864, y: 633612}
+  Generator: {fileID: 741563761}
+  ChunkPrefab: {fileID: 5550527359518039109, guid: b62e4a3b34941e140b91725f38278b79, type: 3}

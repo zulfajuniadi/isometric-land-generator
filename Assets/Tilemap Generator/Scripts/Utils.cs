@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace TilemapGenerator
@@ -56,5 +57,23 @@ namespace TilemapGenerator
             return mesh;
         }
 
+        static float[] minMaxArgs = new float[4];
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MinMaxCorners(float a, float b, float c, float d, out float maximum, out float minimum)
+        {
+            minMaxArgs[0] = a;
+            minMaxArgs[1] = b;
+            minMaxArgs[2] = c;
+            minMaxArgs[3] = d;
+            float min = float.MaxValue;
+            float max = float.MinValue;
+            for (int i = 0; i < 4; i++)
+            {
+                max = minMaxArgs[i] > max ? minMaxArgs[i] : max;
+                min = minMaxArgs[i] < min ? minMaxArgs[i] : min;
+            }
+            maximum = max;
+            minimum = min;
+        }
     }
 }
