@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace TilemapGenerator
+namespace TilemapGenerator.Settings
 {
     [CreateAssetMenu(fileName = "Instanced Spawner Configuration", menuName = "Tilemap Generator/Instanced Spawner Config", order = 1)]
     public class InstancedSpawnerConfiguration : ScriptableObject
