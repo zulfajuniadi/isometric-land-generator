@@ -47,6 +47,7 @@ namespace TilemapGenerator
 
             noiseMap = new int[chunkSize1, chunkSize1];
             GameObject = new GameObject();
+            GameObject.hideFlags = HideFlags.DontSave;
             GameObject.transform.parent = this.output;
             Tilemap = GameObject.AddComponent<Tilemap>();
             Renderer = GameObject.AddComponent<TilemapRenderer>();
