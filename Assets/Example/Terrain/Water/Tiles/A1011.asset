@@ -12,12 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
   m_Name: A1011
   m_EditorClassIdentifier: 
+  DefaultSprite: {fileID: 21300000, guid: 8fa7e42c2e0b3bb45950d06f26b805e9, type: 3}
   m_AnimatedSprites:
   - {fileID: 21300000, guid: 8fa7e42c2e0b3bb45950d06f26b805e9, type: 3}
   - {fileID: 21300000, guid: f09f1b7c3ccc7ea47a7d55c3a405b6e7, type: 3}
   - {fileID: 21300000, guid: 76be804999c15334abe8f42199e27c0d, type: 3}
   - {fileID: 21300000, guid: f09f1b7c3ccc7ea47a7d55c3a405b6e7, type: 3}
-  m_MinSpeed: 4
-  m_MaxSpeed: 4
-  m_AnimationStartTime: 0
+  Speed: 1
   m_TileColliderType: 0
+  tileColor: {r: 1, g: 1, b: 1, a: 1}
+  tileTransform:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
