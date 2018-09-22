@@ -17,7 +17,7 @@ namespace TilemapGenerator.Behaviours
             Vector2 scrollDelta = Input.mouseScrollDelta;
             if (scrollDelta != Vector2.zero)
             {
-                MainCamera.orthographicSize += scrollDelta.y;
+                MainCamera.orthographicSize -= scrollDelta.y;
                 if (MainCamera.orthographicSize > MinMaxZoom.y)
                 {
                     MainCamera.orthographicSize = MinMaxZoom.y;
