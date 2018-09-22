@@ -6,13 +6,11 @@ namespace TilemapGenerator.Behaviours
 {
     public class MapController : MonoBehaviour
     {
-        public LandGenerator LandGenerator;
         public Camera MainCamera;
         public Vector2 MinMaxZoom = new Vector2(2, 15);
 
         private bool isDragging = false;
         private Vector3 lastPosition = Vector3.zero;
-        private Quaternion rotation = Quaternion.Euler(0, 0, -45);
 
         private void Update()
         {
@@ -31,7 +29,7 @@ namespace TilemapGenerator.Behaviours
             }
             if (Input.GetMouseButtonDown(1))
             {
-                lastPosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
+                lastPosition = Input.mousePosition;
 
                 isDragging = true;
             }
@@ -41,8 +39,8 @@ namespace TilemapGenerator.Behaviours
             }
             else if (isDragging)
             {
-                Vector3 currentPosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
-                LandGenerator.Output.position -= lastPosition - currentPosition;
+                Vector3 currentPosition = Input.mousePosition;
+                transform.position += (lastPosition - currentPosition) * MainCamera.orthographicSize / 3f * Time.deltaTime;
                 lastPosition = currentPosition;
             }
         }

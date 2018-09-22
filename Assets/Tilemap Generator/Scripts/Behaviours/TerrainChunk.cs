@@ -18,8 +18,8 @@ namespace TilemapGenerator.Behaviours
         private TileBase[] tiles;
         private Vector3Int[] positions;
         private RectInt rect;
-        private Vector2Int randomOffset;
-        private Vector2Int mapPosition;
+        private Vector3Int randomOffset;
+        private Vector3Int mapPosition;
         private Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>> cachedBiomes;
         private Dictionary<int, List<Vector4>> spawnerPositions;
         private Dictionary<int, List<Vector4>> tempSpawnerPositions;
@@ -34,8 +34,6 @@ namespace TilemapGenerator.Behaviours
         Tuple<int, Dictionary<Vector4, TileBase>> biome = null;
         TileBase tile = null;
         Vector4 flat = new Vector4(0, 0, 0, 0);
-        float chunkOffsetX;
-        float chunkOffsetY;
         int bottomHeight;
         int bottomMinus1;
         int subChunkSize = 8;
@@ -85,15 +83,15 @@ namespace TilemapGenerator.Behaviours
             bottomMinus1 = bottomHeight - 1;
         }
 
-        public void Setup(Vector2Int mapPosition)
+        public void Setup(Vector3Int mapPosition)
         {
             if (cachedBiomes == null)
             {
                 Boot();
             }
-            Vector2Int baseOffset = mapPosition * chunkSize;
-            this.rect = new RectInt(baseOffset, new Vector2Int(chunkSize, chunkSize));
-            prng = new System.Random((randomOffset + this.rect.min).GetHashCode());
+            Vector3Int baseOffset = mapPosition * chunkSize;
+            this.rect = new RectInt(new Vector2Int(baseOffset.x, baseOffset.y), new Vector2Int(chunkSize, chunkSize));
+            prng = new System.Random(((Vector2Int) randomOffset + this.rect.min).GetHashCode());
             float halfSize = chunkSize / 2f;
             Tilemap.ClearAllTiles();
             gameObject.name = rect.min.ToString();
@@ -109,9 +107,7 @@ namespace TilemapGenerator.Behaviours
                 (baseOffset.x / chunkSize - baseOffset.y / chunkSize) * halfSize,
                 (baseOffset.x / chunkSize + baseOffset.y / chunkSize) * halfSize / 2f
             );
-            transform.localPosition = position;
-            chunkOffsetX = position.x;
-            chunkOffsetY = position.y - halfMap / 2;
+            transform.position = position;
 
             gameObject.SetActive(true);
             BuildMap();
@@ -130,14 +126,14 @@ namespace TilemapGenerator.Behaviours
 
         private void BuildMap()
         {
-            GenerateNoiseMap(randomOffset + rect.min);
+            GenerateNoiseMap();
             if (Application.isPlaying)
             {
                 StartCoroutine(BuildMapGradual());
             }
             else
             {
-                BuildMapNow(0, 0);
+                BuildMapOffset(0, 0);
             }
         }
 
@@ -152,7 +148,7 @@ namespace TilemapGenerator.Behaviours
                     {
                         for (int offsetY = 0; offsetY < chunkSize; offsetY += subChunkSize)
                         {
-                            BuildMapNow(offsetX, offsetY);
+                            BuildMapOffset(offsetX, offsetY);
                             yield return null;
                         }
                     }
@@ -163,7 +159,7 @@ namespace TilemapGenerator.Behaviours
                     {
                         for (int offsetY = 0; offsetY < chunkSize; offsetY += subChunkSize)
                         {
-                            BuildMapNow(offsetX, offsetY);
+                            BuildMapOffset(offsetX, offsetY);
                             yield return null;
                         }
                     }
@@ -177,7 +173,7 @@ namespace TilemapGenerator.Behaviours
                     {
                         for (int offsetX = 0; offsetX < chunkSize; offsetX += subChunkSize)
                         {
-                            BuildMapNow(offsetX, offsetY);
+                            BuildMapOffset(offsetX, offsetY);
                             yield return null;
                         }
                     }
@@ -188,7 +184,7 @@ namespace TilemapGenerator.Behaviours
                     {
                         for (int offsetX = 0; offsetX < chunkSize; offsetX += subChunkSize)
                         {
-                            BuildMapNow(offsetX, offsetY);
+                            BuildMapOffset(offsetX, offsetY);
                             yield return null;
                         }
                     }
@@ -196,7 +192,7 @@ namespace TilemapGenerator.Behaviours
             }
         }
 
-        private void BuildMapNow(int offsetX, int offsetY)
+        private void BuildMapOffset(int offsetX, int offsetY)
         {
             bool hasComplained = false;
             int maxX = offsetX + subChunkSize;
@@ -256,14 +252,14 @@ namespace TilemapGenerator.Behaviours
                         else if (!hasComplained)
                         {
                             hasComplained = true;
-                            Debug.Log(corners);
-                            Debug.Log(highest);
+                            Debug.LogWarning("Unmatched corner: " + corners + " at height: " + highest);
                         }
                         isSloped = true;
                     }
                     foreach (var item in cachedSpawners[biomeHash])
                     {
                         if (
+                            item.Value.Spawer.Enabled &&
                             prng.NextDouble() <= item.Value.Probability &&
                             (
                                 (item.Value.Spawer.OnSlopes && isSloped) ||
@@ -273,13 +269,10 @@ namespace TilemapGenerator.Behaviours
                         {
                             float textureCount = (float) item.Value.Spawer.PackedTexture.depth;
                             float index = Mathf.Round((float) prng.NextDouble() * textureCount) / textureCount + (0.5f * 1f / textureCount);
-                            float mapX = x + (float) prng.NextDouble() - 0.5f;
-                            float mapY = y + (float) prng.NextDouble() - 0.5f;
-                            float worldX = chunkOffsetX + ((mapX - mapY) / 2f);
-                            float worldY = chunkOffsetY + ((mapX + mapY) / 4f) + highest * 0.25f;
-                            Vector4 child = new Vector4(worldX, worldY, 0, index);
-                            spawnerPositions[item.Key].Add(child);
-                            tempSpawnerPositions[item.Key].Add(child);
+                            Vector4 worldPos = Provider.Generator.MapToWorld(new Vector3(rect.min.x + x, rect.min.y + y, highest));
+                            worldPos.w = index;
+                            spawnerPositions[item.Key].Add(worldPos);
+                            tempSpawnerPositions[item.Key].Add(worldPos);
                         }
                     }
                     positions[key] = new Vector3Int(x - halfMap, y - halfMap, noiseMap[x, y]);
@@ -308,23 +301,18 @@ namespace TilemapGenerator.Behaviours
             return last;
         }
 
-        public void GenerateNoiseMap(Vector2 offset)
+        public void GenerateNoiseMap()
         {
             for (int y = 0; y < chunkSize1; y++)
             {
                 for (int x = 0; x < chunkSize1; x++)
                 {
-                    SamplePoint(offset, height, y, x);
+                    Vector2 point = rect.min;
+                    point.x += x;
+                    point.y += y;
+                    noiseMap[x, y] = Mathf.RoundToInt(Provider.Generator.SampleMapHeight(point));
                 }
             }
-        }
-
-        public void SamplePoint(Vector2 offset, float height, int y, int x)
-        {
-            float sampleX = (offset.x + x) / noiseScale;
-            float sampleY = (offset.y + y) / noiseScale;
-            float perlinValue = Mathf.PerlinNoise(sampleX, sampleY);
-            noiseMap[x, y] = Mathf.RoundToInt(Provider.Generator.TerrainCurve.Evaluate(perlinValue) * height);
         }
     }
 }

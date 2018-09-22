@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Camera;
 
 namespace TilemapGenerator
 {
@@ -22,8 +23,6 @@ namespace TilemapGenerator
     {
         private Mesh mesh;
         private Material material;
-        private Vector3 offset;
-        private Vector3 lastOffset;
         private Texture3D packedTexture;
         private int cachedInstanceCount = -1;
         private ComputeBuffer positionBuffer;
@@ -32,9 +31,13 @@ namespace TilemapGenerator
         private HashSet<Vector4> instances = new HashSet<Vector4>();
         private Vector4[] instancesCache;
         private bool isDirty = false;
+        Vector3[] frustumCorners = new Vector3[4];
+        Bounds frustumBounds = new Bounds();
+        Camera mainCamera;
 
-        public InstancedRenderer(int capacity, Texture3D packedTexture, Material material, float meshSize)
+        public InstancedRenderer(Camera mainCamera, int capacity, Texture3D packedTexture, Material material, float meshSize)
         {
+            this.mainCamera = mainCamera;
             this.packedTexture = packedTexture;
             float height = (float) packedTexture.width / (float) packedTexture.height * meshSize;
             float width = 1 * meshSize;
@@ -46,7 +49,6 @@ namespace TilemapGenerator
             instances = new HashSet<Vector4>(new Vector4[capacity], new TileComparator());
             instancesCache = new Vector4[capacity];
             instances.Clear();
-            lastOffset = Vector3.one * float.MaxValue;
         }
 
         public void Tick()
@@ -57,7 +59,12 @@ namespace TilemapGenerator
             )
             {
                 UpdateBuffers();
-                Graphics.DrawMeshInstancedIndirect(mesh, 0, material, new Bounds(Vector3.zero, new Vector3(100.0f, 100.0f, 100.0f)), argsBuffer);
+                mainCamera.CalculateFrustumCorners(new Rect(0, 0, 1, 1), mainCamera.farClipPlane, MonoOrStereoscopicEye.Mono, frustumCorners);
+                Vector3 min = frustumCorners[0];
+                min.z = 0;
+                frustumBounds.SetMinMax(min, frustumCorners[2]);
+                frustumBounds.center = mainCamera.transform.position;
+                Graphics.DrawMeshInstancedIndirect(mesh, 0, material, frustumBounds, argsBuffer);
             }
         }
 
@@ -77,14 +84,8 @@ namespace TilemapGenerator
                 isDirty = true;
             }
             if (!isDirty) return;
-            lastOffset = offset;
             isDirty = false;
-            int i = 0;
-            foreach (var v in instances)
-            {
-                instancesCache[i] = new Vector4(v.x + offset.x, v.y + offset.y, v.z, v.w);
-                i++;
-            }
+            instances.CopyTo(instancesCache, 0, cachedInstanceCount);
             positionBuffer.SetData(instancesCache);
             material.SetBuffer("positionBuffer", positionBuffer);
             if (mesh != null)
@@ -99,15 +100,6 @@ namespace TilemapGenerator
                 args[0] = args[1] = args[2] = args[3] = 0;
             }
             argsBuffer.SetData(args);
-        }
-
-        public void UpdateOffset(Vector3 offset)
-        {
-            if (offset != this.offset)
-            {
-                this.offset = offset;
-                isDirty = true;
-            }
         }
 
         public void AddInstances(IEnumerable<Vector4> instances)

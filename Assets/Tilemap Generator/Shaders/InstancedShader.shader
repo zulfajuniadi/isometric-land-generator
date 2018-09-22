@@ -27,6 +27,8 @@ Shader "Instanced/InstancedShader" {
             #pragma fragment frag
             #pragma multi_compile_fwdbase nolightmap nodirlightmap nodynlightmap novertexlight
             #pragma multi_compile_instancing
+            #pragma multi_compile _ PIXELSNAP_ON
+            #pragma multi_compile _ ETC1_EXTERNAL_ALPHA
             #pragma target 4.5
             #include "UnityCG.cginc"
             #include "UnitySprites.cginc"
@@ -56,6 +58,7 @@ Shader "Instanced/InstancedShader" {
                 float4 data = 0;
             #endif
                 float3 localPosition = v.vertex.xyz;
+                localPosition.y -= 0.25;
                 float3 worldPosition = data.xyz + localPosition;
                 float3 worldNormal = v.normal;
 

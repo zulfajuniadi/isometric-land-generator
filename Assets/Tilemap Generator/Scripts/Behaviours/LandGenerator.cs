@@ -40,6 +40,8 @@ namespace TilemapGenerator.Behaviours
         public Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>> CachedBiomes = new Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>>();
         public Transform Output;
         public ChunkProvider ChunkProvider;
+        public Vector3Int RandomOffset = Vector3Int.zero;
+        public Camera MainCamera;
 
         public Dictionary<int, InstancedRenderer> CachedRenderers = new Dictionary<int, InstancedRenderer>();
 
@@ -58,6 +60,12 @@ namespace TilemapGenerator.Behaviours
         public void Generate()
         {
             Clear();
+            Random.InitState(Seed.GetHashCode());
+            RandomOffset = new Vector3Int(
+                Random.Range(-999999, 999999),
+                Random.Range(-999999, 999999),
+                0
+            );
             foreach (var biome in BiomeConfigs)
             {
                 var tiles = new Dictionary<Vector4, TileBase>();
@@ -69,12 +77,8 @@ namespace TilemapGenerator.Behaviours
                     RegisterSpawner(spawner.Probability, spawner.Spawer);
                 }
             }
-            Random.InitState(Seed.GetHashCode());
             ChunkProvider.Boot();
-            ChunkProvider.RandomOffset = new Vector2Int(
-                Random.Range(-999999, 999999),
-                Random.Range(-999999, 999999)
-            );
+            ChunkProvider.RandomOffset = new Vector3Int(RandomOffset.x, RandomOffset.y, 0);
         }
 
         private void Clear()
@@ -91,7 +95,7 @@ namespace TilemapGenerator.Behaviours
         {
             if (!CachedRenderers.ContainsKey(configuration.GetHashCode()))
             {
-                var renderer = new InstancedRenderer((int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, configuration.Material, configuration.MeshSize);
+                var renderer = new InstancedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, configuration.Material, configuration.MeshSize);
                 CachedRenderers.Add(configuration.GetHashCode(), renderer);
             }
         }
@@ -100,7 +104,6 @@ namespace TilemapGenerator.Behaviours
         {
             foreach (var renderer in CachedRenderers)
             {
-                renderer.Value.UpdateOffset(Output.localPosition);
                 renderer.Value.Tick();
             }
         }
@@ -108,6 +111,41 @@ namespace TilemapGenerator.Behaviours
         private void OnDisable()
         {
             Clear();
+        }
+
+        public Vector3 MapToWorld(Vector3 map)
+        {
+            float chunkSize = ChunkSize;
+            float halfSize = chunkSize / 2f;
+            Vector3 worldPos = Vector3.zero;
+            worldPos.x = (map.x / chunkSize - map.y / chunkSize) * halfSize;
+            worldPos.y = (map.x / chunkSize + map.y / chunkSize) * halfSize / 2f - halfSize / 2f + map.z * 0.25f;
+            worldPos.z = -map.z;
+            return worldPos;
+        }
+
+        public Vector3 WorldToMap(Vector3 worldPosition)
+        {
+            float halfCellWidth = 1f / 2f;
+            float halfCellHeight = 1f / 4f;
+            Vector3 mapPosition = Vector3.zero;
+            mapPosition.x = (worldPosition.x / halfCellWidth + worldPosition.y / halfCellHeight) / 2;
+            mapPosition.y = (worldPosition.y / halfCellHeight - (worldPosition.x / halfCellWidth)) / 2;
+            return mapPosition;
+        }
+
+        public float SampleMapHeight(Vector2 mapPosition)
+        {
+            Vector2 randomOffset = new Vector2(RandomOffset.x, RandomOffset.y);
+            Vector2 samplePoint = (randomOffset + mapPosition) / NoiseScale;
+            float perlinValue = Mathf.PerlinNoise(samplePoint.x, samplePoint.y);
+            return TerrainCurve.Evaluate(perlinValue) * Height;
+        }
+
+        public float SampleWorldHeight(Vector2 worldPosition)
+        {
+            Vector3 mapPosition = WorldToMap(worldPosition);
+            return SampleMapHeight(mapPosition);
         }
 
 #if UNITY_EDITOR

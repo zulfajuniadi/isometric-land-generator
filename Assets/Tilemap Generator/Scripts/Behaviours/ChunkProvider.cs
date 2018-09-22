@@ -7,12 +7,12 @@ namespace TilemapGenerator.Behaviours
     [ExecuteInEditMode]
     public class ChunkProvider : MonoBehaviour
     {
-        public Vector2Int RandomOffset;
+        public Vector3Int RandomOffset;
         public LandGenerator Generator;
         public GameObject ChunkPrefab;
 
-        private Dictionary<Vector2Int, TerrainChunk> chunks = new Dictionary<Vector2Int, TerrainChunk>();
-        private Queue<Vector2Int> chunkQueue = new Queue<Vector2Int>();
+        private Dictionary<Vector3Int, TerrainChunk> chunks = new Dictionary<Vector3Int, TerrainChunk>();
+        private Queue<Vector3Int> chunkQueue = new Queue<Vector3Int>();
         private Queue<TerrainChunk> freeChunkQueue = new Queue<TerrainChunk>();
         private float lastTick;
 
@@ -26,21 +26,21 @@ namespace TilemapGenerator.Behaviours
 
             for (int i = 0; i < Generator.ActiveTilemaps * 1.5; i++)
             {
-                var chunk = CreateNewChunk(new Vector2Int(0, 0));
+                var chunk = CreateNewChunk(new Vector3Int(0, 0, 0));
                 freeChunkQueue.Enqueue(chunk);
             }
         }
 
         private void Update()
         {
-            Vector2Int caddyPosition = GetCaddyPosition();
+            Vector3Int caddyPosition = GetCameraChunkPosition();
 
             if (!chunks.ContainsKey(caddyPosition))
             {
                 chunkQueue.Enqueue(caddyPosition);
             }
 
-            Vector2Int top = caddyPosition,
+            Vector3Int top = caddyPosition,
                 bottom = caddyPosition,
                 left = caddyPosition,
                 right = caddyPosition,
@@ -95,11 +95,11 @@ namespace TilemapGenerator.Behaviours
             {
                 float farthest = float.MinValue;
                 TerrainChunk farthestChunk = null;
-                Vector2Int key = Vector2Int.zero;
+                Vector3Int key = Vector3Int.zero;
                 foreach (var chunkKV in chunks)
                 {
                     float dist;
-                    if ((dist = Vector2.Distance(caddyPosition, chunkKV.Key)) > farthest)
+                    if ((dist = Vector3Int.Distance(caddyPosition, chunkKV.Key)) > farthest)
                     {
                         farthestChunk = chunkKV.Value;
                         farthest = dist;
@@ -115,17 +115,16 @@ namespace TilemapGenerator.Behaviours
             }
         }
 
-        private Vector2Int GetCaddyPosition()
+        private Vector3Int GetCameraChunkPosition()
         {
-            int halfMap = Generator.ChunkSize / 2;
-            int quartMap = Generator.ChunkSize / 4;
-            Vector2Int caddyPosition = Vector2Int.zero;
-            caddyPosition.x = -Mathf.RoundToInt((Generator.Output.position.x / halfMap + Generator.Output.position.y / quartMap) / 2);
-            caddyPosition.y = -Mathf.RoundToInt((Generator.Output.position.y / quartMap - (Generator.Output.position.x / halfMap)) / 2);
-            return caddyPosition;
+            Vector3 mapPosition = Generator.WorldToMap(Generator.MainCamera.transform.position);
+            Vector3Int chunkPosition = Vector3Int.zero;
+            chunkPosition.x = Mathf.RoundToInt(mapPosition.x / Generator.ChunkSize);
+            chunkPosition.y = Mathf.RoundToInt(mapPosition.y / Generator.ChunkSize);
+            return chunkPosition;
         }
 
-        private TerrainChunk CreateChunk(Vector2Int mapPosition)
+        private TerrainChunk CreateChunk(Vector3Int mapPosition)
         {
             if (freeChunkQueue.Count > 0)
             {
@@ -142,7 +141,7 @@ namespace TilemapGenerator.Behaviours
             }
         }
 
-        private TerrainChunk CreateNewChunk(Vector2Int mapPosition)
+        private TerrainChunk CreateNewChunk(Vector3Int mapPosition)
         {
             GameObject go = Instantiate(ChunkPrefab);
             go.hideFlags = HideFlags.DontSave;

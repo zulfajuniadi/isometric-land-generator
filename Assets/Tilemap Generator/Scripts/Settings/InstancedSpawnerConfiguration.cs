@@ -10,6 +10,7 @@ namespace TilemapGenerator.Settings
         public Sprite[] Sprites;
         public Texture3D PackedTexture;
         public float MeshSize = 1f;
+        public bool Enabled = true;
         public bool OnFlat = true;
         public bool OnSlopes = true;
         public Material Material;
