@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88678861dd7742b8bc6bb69daff4e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Seed: 35517.75
+  Seed: -342568.62
   Height: 30
   NoiseScale: 120
   ChunkSize: 64
@@ -331,13 +331,13 @@ MonoBehaviour:
     Height: 0
     Spawners:
     - Spawer: {fileID: 11400000, guid: 16ddc45c7aa18c047ad6e3c3146d12da, type: 2}
-      Probability: 0.4
-      MaxCount: -1
+      Probability: 0
+      MaxCount: 0
   - TileConfig: {fileID: 11400000, guid: 902ce549eab1bc347aa15d373183703d, type: 2}
     Height: 0.67
     Spawners:
     - Spawer: {fileID: 11400000, guid: 86b0630af638365409fb464a1067cffd, type: 2}
-      Probability: 0.4
+      Probability: 0.367
       MaxCount: -1
   - TileConfig: {fileID: 11400000, guid: 541123d6632726e4cbd7d443ba77eb30, type: 2}
     Height: 0.87
@@ -353,8 +353,9 @@ MonoBehaviour:
       MaxCount: -1
   Output: {fileID: 257278593}
   ChunkProvider: {fileID: 741563763}
-  RandomOffset: {x: -292583, y: -57250, z: 0}
+  RandomOffset: {x: -274312, y: -923957, z: 0}
   MainCamera: {fileID: 534669904}
+  RendererType: 1
 --- !u!114 &741563763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,7 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e954d977bc17d6c4bbef278b0def9368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RandomOffset: {x: -292583, y: -57250, z: 0}
+  RandomOffset: {x: -274312, y: -923957, z: 0}
   Generator: {fileID: 741563761}
   ChunkPrefab: {fileID: 5550527359518039109, guid: b62e4a3b34941e140b91725f38278b79, type: 3}
 --- !u!1001 &946437971
