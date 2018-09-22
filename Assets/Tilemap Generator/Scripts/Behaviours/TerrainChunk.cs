@@ -273,7 +273,9 @@ namespace TilemapGenerator.Behaviours
                         {
                             float textureCount = (float) item.Value.Spawer.PackedTexture.depth;
                             float index = Mathf.Round((float) prng.NextDouble() * textureCount) / textureCount + (0.5f * 1f / textureCount);
-                            Vector4 worldPos = Provider.Generator.MapToWorld(new Vector3(rect.min.x + x, rect.min.y + y, highest));
+                            Vector4 worldPos = Provider.Generator.MapToWorld(new Vector3(rect.min.x + x, rect.min.y + y));
+                            worldPos.y += highest * 0.25f;
+                            worldPos.z = highest;
                             worldPos.w = index;
                             spawnerPositions[item.Key].Add(worldPos);
                             tempSpawnerPositions[item.Key].Add(worldPos);

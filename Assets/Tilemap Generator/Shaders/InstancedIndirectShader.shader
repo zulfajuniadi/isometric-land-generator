@@ -1,4 +1,4 @@
-Shader "Instanced/InstancedShader" {
+Shader "Instanced/InstancedIndirectShader" {
     Properties {
         _MainTex3D ("Albedo (RGB)", 3D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
@@ -27,14 +27,15 @@ Shader "Instanced/InstancedShader" {
             #pragma fragment frag
             #pragma multi_compile_fwdbase nolightmap nodirlightmap nodynlightmap novertexlight
             #pragma multi_compile_instancing
+            #pragma multi_compile _ PIXELSNAP_ON
+            #pragma multi_compile _ ETC1_EXTERNAL_ALPHA
             #pragma target 4.5
             #include "UnityCG.cginc"
             #include "UnitySprites.cginc"
 
-        // #if SHADER_TARGET >= 45
-        //     StructuredBuffer<float> textureIndices;
-        // #endif
-
+        #if SHADER_TARGET >= 45
+            StructuredBuffer<float4> positionBuffer;
+        #endif
             sampler3D _MainTex3D;
 
             struct vertStruct
@@ -51,14 +52,19 @@ Shader "Instanced/InstancedShader" {
 
             vertStruct vert (appdata_full v, uint instanceID : SV_InstanceID)
             {
-            // #if SHADER_TARGET >= 45
-            //     float data = textureIndices[instanceID];
-            // #else
-            //     float data = 0;
-            // #endif
+            #if SHADER_TARGET >= 45
+                float4 data = positionBuffer[instanceID];
+            #else
+                float4 data = 0;
+            #endif
+                float3 localPosition = v.vertex.xyz;
+                localPosition.y -= 0.25;
+                float3 worldPosition = data.xyz + localPosition;
+                float3 worldNormal = v.normal;
+
                 vertStruct o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.texcoord = float3(v.texcoord.x, v.texcoord.y, 0);
+                o.vertex = mul(UNITY_MATRIX_VP, float4(worldPosition, 1));
+                o.texcoord = float3(v.texcoord.x, v.texcoord.y , data.w);
                 return o;
             }
 

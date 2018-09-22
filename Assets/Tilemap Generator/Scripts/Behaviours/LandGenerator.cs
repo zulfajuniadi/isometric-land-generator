@@ -26,6 +26,12 @@ namespace TilemapGenerator.Behaviours
         public SpawnerProbability[] Spawners = new SpawnerProbability[0];
     }
 
+    public enum RendererType
+    {
+        Instanced,
+        InstancedIndirect
+    }
+
     [ExecuteInEditMode]
     public class LandGenerator : MonoBehaviour
     {
@@ -42,8 +48,9 @@ namespace TilemapGenerator.Behaviours
         public ChunkProvider ChunkProvider;
         public Vector3Int RandomOffset = Vector3Int.zero;
         public Camera MainCamera;
+        public RendererType RendererType = RendererType.Instanced;
 
-        public Dictionary<int, InstancedRenderer> CachedRenderers = new Dictionary<int, InstancedRenderer>();
+        public Dictionary<int, ITileRenderer> CachedRenderers = new Dictionary<int, ITileRenderer>();
 
         private void OnEnable()
         {
@@ -95,8 +102,16 @@ namespace TilemapGenerator.Behaviours
         {
             if (!CachedRenderers.ContainsKey(configuration.GetHashCode()))
             {
-                var renderer = new InstancedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, configuration.Material, configuration.MeshSize);
-                CachedRenderers.Add(configuration.GetHashCode(), renderer);
+                if (RendererType == RendererType.Instanced)
+                {
+                    var renderer = new InstancedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, configuration.Material, configuration.MeshSize);
+                    CachedRenderers.Add(configuration.GetHashCode(), renderer);
+                }
+                else
+                {
+                    var renderer = new InstancedIndirectRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, configuration.Material, configuration.MeshSize);
+                    CachedRenderers.Add(configuration.GetHashCode(), renderer);
+                }
             }
         }
 
@@ -119,7 +134,7 @@ namespace TilemapGenerator.Behaviours
             float halfSize = chunkSize / 2f;
             Vector3 worldPos = Vector3.zero;
             worldPos.x = (map.x / chunkSize - map.y / chunkSize) * halfSize;
-            worldPos.y = (map.x / chunkSize + map.y / chunkSize) * halfSize / 2f - halfSize / 2f + map.z * 0.25f;
+            worldPos.y = (map.x / chunkSize + map.y / chunkSize) * halfSize / 2f - halfSize / 2f;
             worldPos.z = -map.z;
             return worldPos;
         }
@@ -129,8 +144,8 @@ namespace TilemapGenerator.Behaviours
             float halfCellWidth = 1f / 2f;
             float halfCellHeight = 1f / 4f;
             Vector3 mapPosition = Vector3.zero;
-            mapPosition.x = (worldPosition.x / halfCellWidth + worldPosition.y / halfCellHeight) / 2;
-            mapPosition.y = (worldPosition.y / halfCellHeight - (worldPosition.x / halfCellWidth)) / 2;
+            mapPosition.x = (worldPosition.x / halfCellWidth + worldPosition.y / halfCellHeight) / 2 + ChunkSize / 2f;
+            mapPosition.y = (worldPosition.y / halfCellHeight - (worldPosition.x / halfCellWidth)) / 2 + ChunkSize / 2f;
             return mapPosition;
         }
 

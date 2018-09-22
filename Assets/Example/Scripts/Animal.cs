@@ -57,7 +57,7 @@ public class Animal : MonoBehaviour
                 SpriteRenderer.flipX = heading.x < 0;
                 Animator.SetFloat("Facing", -Mathf.Sign(heading.y));
                 Vector3 position = transform.position + (Vector3) (heading.normalized * MoveSpeed * Time.deltaTime);
-                position.z = Generator.SampleWorldHeight(transform.position);
+                position.z = Mathf.Round(Generator.SampleWorldHeight(transform.position)) * 2f - 1f;
                 transform.position = position;
             }
         }

@@ -6,20 +6,7 @@ using static UnityEngine.Camera;
 namespace TilemapGenerator
 {
 
-    public struct TileComparator : IEqualityComparer<Vector4>
-    {
-        public bool Equals(Vector4 v1, Vector4 v2)
-        {
-            return v1.x == v2.x && v1.y == v2.y;
-        }
-
-        public int GetHashCode(Vector4 obj)
-        {
-            return (int) (obj.x * obj.y);
-        }
-    }
-
-    public class InstancedRenderer : System.IDisposable
+    public class InstancedIndirectRenderer : ITileRenderer, System.IDisposable
     {
         private Mesh mesh;
         private Material material;
@@ -35,7 +22,7 @@ namespace TilemapGenerator
         Bounds frustumBounds = new Bounds();
         Camera mainCamera;
 
-        public InstancedRenderer(Camera mainCamera, int capacity, Texture3D packedTexture, Material material, float meshSize)
+        public InstancedIndirectRenderer(Camera mainCamera, int capacity, Texture3D packedTexture, Material material, float meshSize)
         {
             this.mainCamera = mainCamera;
             this.packedTexture = packedTexture;
@@ -44,8 +31,11 @@ namespace TilemapGenerator
             this.mesh = Utils.CreatePlane(height, width);
             this.material = Object.Instantiate(material);
             this.material.SetTexture("_MainTex3D", packedTexture);
-            argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
-            positionBuffer = new ComputeBuffer(capacity, 16);
+            if (capacity > 0)
+            {
+                argsBuffer = new ComputeBuffer(1, args.Length * sizeof(uint), ComputeBufferType.IndirectArguments);
+                positionBuffer = new ComputeBuffer(capacity, 16);
+            }
             instances = new HashSet<Vector4>(new Vector4[capacity], new TileComparator());
             instancesCache = new Vector4[capacity];
             instances.Clear();
