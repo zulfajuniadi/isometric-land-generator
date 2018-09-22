@@ -194,6 +194,10 @@ namespace TilemapGenerator.Behaviours
 
         private void BuildMapOffset(int offsetX, int offsetY)
         {
+            foreach (var item in tempSpawnerPositions)
+            {
+                item.Value.Clear();
+            }
             bool hasComplained = false;
             int maxX = offsetX + subChunkSize;
             int maxY = offsetY + subChunkSize;
