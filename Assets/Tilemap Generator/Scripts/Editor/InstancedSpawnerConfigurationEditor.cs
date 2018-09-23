@@ -7,10 +7,10 @@ using TilemapGenerator.Settings;
 namespace TilemapGeneratorEditor
 {
     [CustomEditor(typeof(InstancedSpawnerConfiguration))]
+    [CanEditMultipleObjects]
     public class InstancedSpawnerConfigurationEditor : Editor
     {
-
-        InstancedSpawnerConfiguration instance;
+        private InstancedSpawnerConfiguration instance;
 
         private void OnEnable()
         {

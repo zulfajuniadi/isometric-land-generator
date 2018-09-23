@@ -10,7 +10,7 @@ namespace TilemapGenerator.Behaviours
         public Vector2 MinMaxZoom = new Vector2(2, 15);
 
         private bool isDragging = false;
-        private Vector3 lastPosition = Vector3.zero;
+        private Vector2 lastPosition = Vector2.zero;
 
         private void Update()
         {
@@ -39,8 +39,9 @@ namespace TilemapGenerator.Behaviours
             }
             else if (isDragging)
             {
-                Vector3 currentPosition = Input.mousePosition;
-                transform.position += (lastPosition - currentPosition) * MainCamera.orthographicSize / 2f * Time.deltaTime;
+                Vector2 currentPosition = Input.mousePosition;
+                Vector2 normalizedDelta = (lastPosition - currentPosition) / (float) Screen.width;
+                transform.position += (Vector3) normalizedDelta * MainCamera.orthographicSize * 3f;
                 lastPosition = currentPosition;
             }
         }

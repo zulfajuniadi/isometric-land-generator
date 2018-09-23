@@ -16,7 +16,7 @@ namespace TilemapGenerator
         private ComputeBuffer argsBuffer;
         private uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
         private HashSet<Vector4> instances = new HashSet<Vector4>();
-        private Vector4[] instancesCache;
+        private List<Vector4> instancesCache;
         private bool isDirty = false;
         private Vector3[] frustumCorners = new Vector3[4];
         private Bounds frustumBounds = new Bounds();
@@ -39,7 +39,7 @@ namespace TilemapGenerator
                 positionBuffer = new ComputeBuffer(capacity, 16);
             }
             instances = new HashSet<Vector4>(new Vector4[capacity], new TileComparator());
-            instancesCache = new Vector4[capacity];
+            instancesCache = new List<Vector4>(capacity);
             instances.Clear();
         }
 
@@ -64,10 +64,10 @@ namespace TilemapGenerator
         {
             cachedInstanceCount = instances.Count;
             if (
-                instancesCache.Length < cachedInstanceCount
+                instancesCache.Count < cachedInstanceCount
             )
             {
-                instancesCache = new Vector4[cachedInstanceCount];
+                instancesCache = new List<Vector4>(cachedInstanceCount);
                 if (positionBuffer.count < cachedInstanceCount)
                 {
                     positionBuffer.Dispose();
@@ -77,7 +77,9 @@ namespace TilemapGenerator
             }
             if (!isDirty) return;
             isDirty = false;
-            instances.CopyTo(instancesCache, 0, cachedInstanceCount);
+            instancesCache.Clear();
+            instancesCache.AddRange(instances);
+            instancesCache.Sort(new DrawOrder());
             positionBuffer.SetData(instancesCache);
             material.SetBuffer("positionBuffer", positionBuffer);
             if (mesh != null)
@@ -121,6 +123,14 @@ namespace TilemapGenerator
             if (argsBuffer != null)
                 argsBuffer.Release();
             argsBuffer = null;
+        }
+    }
+
+    public class DrawOrder : IComparer<Vector4>
+    {
+        public int Compare(Vector4 v1, Vector4 v2)
+        {
+            return v1.y == v2.y ? 0 : v1.y < v2.y ? 1 : -1;
         }
     }
 }

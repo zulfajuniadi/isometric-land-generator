@@ -31,12 +31,12 @@ namespace TilemapGenerator.Behaviours
         private float noiseScale;
         private Transform output;
         private System.Random prng;
-        Tuple<int, Dictionary<Vector4, TileBase>> biome = null;
-        TileBase tile = null;
-        Vector4 flat = new Vector4(0, 0, 0, 0);
-        int bottomHeight;
-        int bottomMinus1;
-        int subChunkSize = 16;
+        private Tuple<int, Dictionary<Vector4, TileBase>> biome = null;
+        private TileBase tile = null;
+        private Vector4 flat = new Vector4(0, 0, 0, 0);
+        private int bottomHeight;
+        private int bottomMinus1;
+        private int subChunkSize = 8;
 
         private void Boot()
         {

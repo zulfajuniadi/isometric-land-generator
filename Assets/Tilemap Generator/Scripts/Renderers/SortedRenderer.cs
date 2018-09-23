@@ -32,7 +32,6 @@ namespace TilemapGenerator
             this.material = new Material(shader);
             this.material.renderQueue = 3000;
             this.material.SetTexture("_MainTex3D", packedTexture);
-            this.material.SetFloat("_TextureDepth", packedTexture.depth);
             mainCameraTransform = mainCamera.transform;
             instances = new HashSet<Vector4>(new Vector4[capacity], new TileComparator());
             block = new MaterialPropertyBlock();
@@ -57,7 +56,7 @@ namespace TilemapGenerator
                 foreach (var item in cachedInstances)
                 {
                     block.SetFloat("_TextureOffset", item.w);
-                    Graphics.DrawMesh(mesh, new Vector3(item.x, item.y, item.z), Quaternion.identity, material, 0, null, 0, block, false, false, false);
+                    Graphics.DrawMesh(mesh, new Vector3(item.x, item.y, item.z), Quaternion.identity, material, 1, null, 0, block, false, false, false);
                 }
             }
         }
@@ -104,11 +103,6 @@ namespace TilemapGenerator
             isDirty = true;
         }
 
-        public void Dispose()
-        {
-            if (textureIndicesBuffer != null)
-                textureIndicesBuffer.Release();
-            textureIndicesBuffer = null;
-        }
+        public void Dispose() { }
     }
 }

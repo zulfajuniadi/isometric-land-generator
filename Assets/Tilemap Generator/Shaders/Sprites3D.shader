@@ -53,6 +53,7 @@ Shader "Sprites/3D"
 			fixed4 frag (vertStruct IN) : SV_Target
 			{
                 fixed4 c = Sample3DTexture (IN.texcoord);
+				c.rgb -= 0.25;
                 c.rgb *= c.a;
 				return c;
 			}

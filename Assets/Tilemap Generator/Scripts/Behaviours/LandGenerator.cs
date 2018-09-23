@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using TilemapGenerator.Settings;
 using Random = UnityEngine.Random;
+using UnityEngine.U2D;
 
 namespace TilemapGenerator.Behaviours
 {
@@ -54,8 +55,9 @@ namespace TilemapGenerator.Behaviours
         public Vector3Int RandomOffset = Vector3Int.zero;
         [HideInInspector]
         public Shader SortedShader, IndirectShader;
-
         public Dictionary<int, ITileRenderer> CachedRenderers = new Dictionary<int, ITileRenderer>();
+
+        private Material rendererMaterial;
 
         private void OnEnable()
         {
@@ -109,6 +111,11 @@ namespace TilemapGenerator.Behaviours
         {
             if (!CachedRenderers.ContainsKey(configuration.GetHashCode()))
             {
+                // webgl instancing broken on 2013.x
+#if UNITY_WEBGL
+                var renderer = new SortedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, SortedShader, configuration.MeshSize);
+                CachedRenderers.Add(configuration.GetHashCode(), renderer);
+#else
                 if (RendererType == RendererType.Sorted)
                 {
                     var renderer = new SortedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, SortedShader, configuration.MeshSize);
@@ -119,6 +126,7 @@ namespace TilemapGenerator.Behaviours
                     var renderer = new InstancedIndirectRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, IndirectShader, configuration.MeshSize);
                     CachedRenderers.Add(configuration.GetHashCode(), renderer);
                 }
+#endif
             }
         }
 

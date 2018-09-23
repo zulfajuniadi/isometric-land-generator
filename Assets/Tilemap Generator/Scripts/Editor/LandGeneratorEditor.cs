@@ -4,11 +4,10 @@ using TilemapGenerator.Behaviours;
 
 namespace TilemapGeneratorEditor
 {
-
     [CustomEditor(typeof(LandGenerator))]
     public class LandGeneratorEditor : Editor
     {
-        LandGenerator generator;
+        private LandGenerator generator;
 
         void OnEnable()
         {
