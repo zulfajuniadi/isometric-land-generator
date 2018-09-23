@@ -47,10 +47,11 @@ namespace TilemapGenerator.Behaviours
         public Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>> CachedBiomes = new Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>>();
         public Transform Output;
         public ChunkProvider ChunkProvider;
-        public Vector3Int RandomOffset = Vector3Int.zero;
         public Camera MainCamera;
         public RendererType RendererType = RendererType.Unsorted;
         public bool AutoGenerate;
+        [HideInInspector]
+        public Vector3Int RandomOffset = Vector3Int.zero;
         [HideInInspector]
         public Shader SortedShader, IndirectShader;
 
