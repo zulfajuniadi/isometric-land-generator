@@ -18,6 +18,8 @@ Unity Infinite Isometric Terrain Generator
 7. Simple randomized spawners (for trees, shrubs, etc)
 8. Fast terrain generation (< 16 ms per chunk)
 9. Rendering the whole map with trees inside the editor takes 3ms with vSync off. Should be less than that on a built player.
+10. Unsorted (fast) and Sorted (3x slower) tree rendering
+11. WebGL Support
 
 ## Quick Start:
 
@@ -33,6 +35,8 @@ Open up the Example scene inside the Example folder and press play
 4. Active Tilemaps: How many chunks are active at once
 5. Biome configs: The configuration of the biome
 6. Terrain Curve: The curve to be used when interpolating the results of the perlin noise sample
+7. Rendering mode: Unsorted (fast) and Sorted (3x slower) spawner items rendering, WebGL only supports Sorted Rendering
+8. Auto Generate: Detect changes inside the editor and auto generates tiles
 
 ## Biome Configs:
 
@@ -116,11 +120,13 @@ Some tiles will need a custom pivot to look right on the map. Refer to the impor
 Pull requests are welcomed :)
 
 1. Tile map tools such as grid management and pathfinding so that this can actually be used in a game.
-2. River Generation
-3. Changing Seasons & Weather
+2. Terraforming
+3. Prefab spawning
+4. Animals
 
 ## Credits
 
-1. [Terrain Renderer by Clint Bellanger](https://opengameart.org/content/terrain-renderer)
-2. [Trees Megapack as curated by rrexky](https://opengameart.org/content/trees-mega-pack-cc-by-30-0)
-3. [Open Game Art](https://opengameart.org)
+1. [Nature Kit by Kenny](https://kenney.nl/assets/nature-kit)
+2. [Terrain Renderer by Clint Bellanger](https://opengameart.org/content/terrain-renderer)
+3. [Trees Megapack as curated by rrexky](https://opengameart.org/content/trees-mega-pack-cc-by-30-0)
+4. [Open Game Art](https://opengameart.org)
