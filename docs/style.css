@@ -1,4 +1,6 @@
-
+body {
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+}
 .webgl-content * {border: 0; margin: 0; padding: 0}
 .webgl-content {
     position: fixed;
