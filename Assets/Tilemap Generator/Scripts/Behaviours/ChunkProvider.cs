@@ -119,8 +119,8 @@ namespace TilemapGenerator.Behaviours
         {
             Vector3 mapPosition = Generator.WorldToMap(Generator.MainCamera.transform.position);
             Vector3Int chunkPosition = Vector3Int.zero;
-            chunkPosition.x = Mathf.RoundToInt(mapPosition.x / Generator.ChunkSize);
-            chunkPosition.y = Mathf.RoundToInt(mapPosition.y / Generator.ChunkSize);
+            chunkPosition.x = Mathf.RoundToInt((mapPosition.x - Generator.ChunkSize / 2) / Generator.ChunkSize);
+            chunkPosition.y = Mathf.RoundToInt((mapPosition.y - Generator.ChunkSize / 2) / Generator.ChunkSize);
             return chunkPosition;
         }
 
@@ -152,22 +152,5 @@ namespace TilemapGenerator.Behaviours
             go.SetActive(false);
             return chunk;
         }
-
-        // public void Clear()
-        // {
-        //     foreach (var chunk in chunks)
-        //     {
-        //         chunk.Value.Dispose();
-        //     }
-        //     while (freeChunkQueue.Count > 0)
-        //     {
-        //         freeChunkQueue.Dequeue().Dispose();
-        //     }
-        //     chunks.Clear();
-        //     chunkQueue.Clear();
-        //     freeChunkQueue.Clear();
-        //     while (Generator.Output.childCount > 0)
-        //         DestroyImmediate(Generator.Output.GetChild(0).gameObject);
-        // }
     }
 }

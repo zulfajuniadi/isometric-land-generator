@@ -14,7 +14,8 @@ namespace TilemapGenerator.Behaviours
         public InstancedSpawnerConfiguration Spawer;
         [Range(0, 1)]
         public float Probability = 0.5f;
-        public int MaxCount = -1;
+        // @TODO
+        // public int MaxCount = -1;
     }
 
     [System.Serializable]
@@ -28,8 +29,8 @@ namespace TilemapGenerator.Behaviours
 
     public enum RendererType
     {
-        Instanced,
-        InstancedIndirect
+        Sorted,
+        Unsorted
     }
 
     [ExecuteInEditMode]
@@ -48,7 +49,10 @@ namespace TilemapGenerator.Behaviours
         public ChunkProvider ChunkProvider;
         public Vector3Int RandomOffset = Vector3Int.zero;
         public Camera MainCamera;
-        public RendererType RendererType = RendererType.Instanced;
+        public RendererType RendererType = RendererType.Unsorted;
+        public bool AutoGenerate;
+        [HideInInspector]
+        public Shader SortedShader, IndirectShader;
 
         public Dictionary<int, ITileRenderer> CachedRenderers = new Dictionary<int, ITileRenderer>();
 
@@ -102,14 +106,14 @@ namespace TilemapGenerator.Behaviours
         {
             if (!CachedRenderers.ContainsKey(configuration.GetHashCode()))
             {
-                if (RendererType == RendererType.Instanced)
+                if (RendererType == RendererType.Sorted)
                 {
-                    var renderer = new InstancedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, configuration.Material, configuration.MeshSize);
+                    var renderer = new SortedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, SortedShader, configuration.MeshSize);
                     CachedRenderers.Add(configuration.GetHashCode(), renderer);
                 }
                 else
                 {
-                    var renderer = new InstancedIndirectRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, configuration.Material, configuration.MeshSize);
+                    var renderer = new InstancedIndirectRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, IndirectShader, configuration.MeshSize);
                     CachedRenderers.Add(configuration.GetHashCode(), renderer);
                 }
             }
@@ -154,7 +158,7 @@ namespace TilemapGenerator.Behaviours
             Vector2 randomOffset = new Vector2(RandomOffset.x, RandomOffset.y);
             Vector2 samplePoint = (randomOffset + mapPosition) / NoiseScale;
             float perlinValue = Mathf.PerlinNoise(samplePoint.x, samplePoint.y);
-            return TerrainCurve.Evaluate(perlinValue) * Height;
+            return Mathf.Round(TerrainCurve.Evaluate(perlinValue) * Height);
         }
 
         public float SampleWorldHeight(Vector2 worldPosition)

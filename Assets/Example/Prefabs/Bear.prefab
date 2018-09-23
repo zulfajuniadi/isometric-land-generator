@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7387233066748526414}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.466, y: -2.336, z: 0}
+  m_LocalPosition: {x: 0.466, y: -2.336, z: 0.2336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -117,3 +117,4 @@ MonoBehaviour:
   Target: {x: 0, y: 0}
   MoveSpeed: 0.4
   waitTime: 0
+  Move: 1

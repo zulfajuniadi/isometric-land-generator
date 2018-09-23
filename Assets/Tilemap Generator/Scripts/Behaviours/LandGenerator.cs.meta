@@ -3,7 +3,12 @@ guid: d88678861dd7742b8bc6bb69daff4e1a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Output: {instanceID: 0}
+  - ChunkProvider: {instanceID: 0}
+  - MainCamera: {instanceID: 0}
+  - SortedShader: {fileID: 4800000, guid: cd1c1d01634d388469e7d178dceff71f, type: 3}
+  - IndirectShader: {fileID: 4800000, guid: 6eba6c1426f28e94eb955608336a712a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

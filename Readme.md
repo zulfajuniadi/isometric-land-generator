@@ -73,7 +73,7 @@ The instanced renderer takes a list of 2D sprites that are packed into a 3D text
 3. Mesh Size: The size of the generated Mesh on the map
 4. On Flat: If this is true, then the sprite will be spawned on flat terrain.
 5. On Slopes: If this is true, then the sprite will be spawned on slopes (like the bamboo around the lake).
-6. Material: A reference to the Instanced Material
+6. Enabled: If this is unchecked, it will not be rendered
 7. Click on `Generate Packed Image` button if you add / remove / update the sprites list. That will generate a new 3D texture and assign it to the `Packed Texture` field.
 
 ## Tile Generator Tool

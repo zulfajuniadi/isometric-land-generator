@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59dd863f7c41a34a8d6ca8c42ad44d2, type: 3}
+  m_Name: Kenny Ground Orange
+  m_EditorClassIdentifier: 
+  Enabled: 1
+  OnFlat: 1
+  OnSlopes: 1
+  Prefab: {fileID: 0}
+  Sprites:
+  - {fileID: 21300000, guid: 2b094f8c7db77964fa121960082f9bb1, type: 3}
+  - {fileID: 21300000, guid: 8c3dca5f641ae5846a232aa333b08e2a, type: 3}
+  - {fileID: 21300000, guid: efbf24aae56c7934fb7c1c68f21930c9, type: 3}
+  - {fileID: 21300000, guid: 9ab4529ece0b0b34eafb697c68f12aef, type: 3}
+  PackedTexture: {fileID: 11700000, guid: 8dfba6e276f65ca4fa607a0e0d68606b, type: 2}
+  MeshSize: 1

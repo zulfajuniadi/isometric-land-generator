@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TilemapGenerator.Behaviours;
 
+[ExecuteInEditMode]
 public class Animal : MonoBehaviour
 {
     public Animator Animator;
@@ -11,8 +12,9 @@ public class Animal : MonoBehaviour
     public float MoveSpeed = 1f;
     public float waitTime = 0;
     public Queue<Vector2> waypoints = new Queue<Vector2>();
+    public bool Move = true;
 
-    LandGenerator Generator;
+    private LandGenerator Generator;
     float halfMap;
     float quartMap;
     private Quaternion rotation = Quaternion.Euler(0, 0, -45);
@@ -26,6 +28,9 @@ public class Animal : MonoBehaviour
 
     void Update()
     {
+        Vector3 pos = transform.position;
+        pos.z = pos.y * 0.1f;
+        transform.position = pos;
         if (waitTime <= 0)
         {
             Vector2 heading = Target - (Vector2) transform.position;
@@ -51,14 +56,11 @@ public class Animal : MonoBehaviour
             else
             {
                 Vector2 mapHeading = (rotation * heading).normalized;
-                // mapHeading.x = (Generator.Output.position.x / halfMap + Generator.Output.position.y / quartMap) / 2f;
-                // mapHeading.y = (Generator.Output.position.y / quartMap - (Generator.Output.position.x / halfMap)) / 2f;
-                // Debug.Log(mapHeading);
                 SpriteRenderer.flipX = heading.x < 0;
                 Animator.SetFloat("Facing", -Mathf.Sign(heading.y));
                 Vector3 position = transform.position + (Vector3) (heading.normalized * MoveSpeed * Time.deltaTime);
-                position.z = Mathf.Round(Generator.SampleWorldHeight(transform.position)) * 2f - 1f;
-                transform.position = position;
+                if (Move)
+                    transform.position = position;
             }
         }
         else

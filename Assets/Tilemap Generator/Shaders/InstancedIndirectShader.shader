@@ -1,7 +1,6 @@
 Shader "Instanced/InstancedIndirectShader" {
     Properties {
         _MainTex3D ("Albedo (RGB)", 3D) = "white" {}
-        _Color ("Tint", Color) = (1,1,1,1)
     }
     SubShader {
 
@@ -58,7 +57,6 @@ Shader "Instanced/InstancedIndirectShader" {
                 float4 data = 0;
             #endif
                 float3 localPosition = v.vertex.xyz;
-                localPosition.y -= 0.25;
                 float3 worldPosition = data.xyz + localPosition;
                 float3 worldNormal = v.normal;
 
@@ -70,7 +68,7 @@ Shader "Instanced/InstancedIndirectShader" {
 
             fixed4 frag (vertStruct IN) : SV_Target
             {
-                fixed4 c = Sample3DTexture (IN.texcoord) * _Color;
+                fixed4 c = Sample3DTexture (IN.texcoord);
                 c.rgb *= c.a;
                 return c;
             }

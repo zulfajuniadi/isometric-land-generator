@@ -36,7 +36,7 @@ namespace TilemapGenerator.Behaviours
         Vector4 flat = new Vector4(0, 0, 0, 0);
         int bottomHeight;
         int bottomMinus1;
-        int subChunkSize = 8;
+        int subChunkSize = 16;
 
         private void Boot()
         {
@@ -272,10 +272,10 @@ namespace TilemapGenerator.Behaviours
                         )
                         {
                             float textureCount = (float) item.Value.Spawer.PackedTexture.depth;
-                            float index = Mathf.Round((float) prng.NextDouble() * textureCount) / textureCount + (0.5f * 1f / textureCount);
+                            float index = Mathf.Round((float) prng.NextDouble() * textureCount) / textureCount + (0.5f / textureCount);
                             Vector4 worldPos = Provider.Generator.MapToWorld(new Vector3(rect.min.x + x, rect.min.y + y));
-                            worldPos.y += highest * 0.25f;
-                            worldPos.z = highest;
+                            worldPos.y += c2 * 0.25f;
+                            worldPos.z = worldPos.y * 0.1f;
                             worldPos.w = index;
                             spawnerPositions[item.Key].Add(worldPos);
                             tempSpawnerPositions[item.Key].Add(worldPos);
@@ -316,7 +316,7 @@ namespace TilemapGenerator.Behaviours
                     Vector2 point = rect.min;
                     point.x += x;
                     point.y += y;
-                    noiseMap[x, y] = Mathf.RoundToInt(Provider.Generator.SampleMapHeight(point));
+                    noiseMap[x, y] = (int) Provider.Generator.SampleMapHeight(point);
                 }
             }
         }

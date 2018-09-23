@@ -196,16 +196,16 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 500
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 3.08
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: -1
+  m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
@@ -223,8 +223,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.53, y: 2.48, z: -250}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -268,7 +268,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 741563758}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -288,8 +288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88678861dd7742b8bc6bb69daff4e1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Seed: -342568.62
-  Height: 30
+  Seed: 292038.84
+  Height: 50
   NoiseScale: 120
   ChunkSize: 64
   ActiveTilemaps: 12
@@ -299,29 +299,29 @@ MonoBehaviour:
     - serializedVersion: 3
       time: -0.0082634445
       value: 0.23468778
-      inSlope: -3.624256
-      outSlope: -3.624256
+      inSlope: -3.4188864
+      outSlope: -3.4188864
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.10793417
+      outWeight: 0.13329938
     - serializedVersion: 3
-      time: 0.67921835
-      value: 0.3087334
-      inSlope: 0.21324424
-      outSlope: 0.21324424
+      time: 0.58757746
+      value: 0.2610507
+      inSlope: 0.77753526
+      outSlope: 0.77753526
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.24847944
-      outWeight: 0.30398422
+      outWeight: 0.2718303
     - serializedVersion: 3
       time: 1.0108948
       value: 1.1452332
-      inSlope: 2.2975996
-      outSlope: 2.2975996
+      inSlope: 1.1923995
+      outSlope: 1.1923995
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.26677352
+      inWeight: 0.3148844
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -330,32 +330,47 @@ MonoBehaviour:
   - TileConfig: {fileID: 11400000, guid: 60d1dc8df8b00224c825fcc9b111d76a, type: 2}
     Height: 0
     Spawners:
-    - Spawer: {fileID: 11400000, guid: 16ddc45c7aa18c047ad6e3c3146d12da, type: 2}
-      Probability: 0
+    - Spawer: {fileID: 11400000, guid: 7cb8aa06c23c3b04ca69291852a870a4, type: 2}
+      Probability: 0.001
+      MaxCount: 0
+    - Spawer: {fileID: 11400000, guid: 25907f2ff99814d47a013af5ac173b10, type: 2}
+      Probability: 0.1
       MaxCount: 0
   - TileConfig: {fileID: 11400000, guid: 902ce549eab1bc347aa15d373183703d, type: 2}
-    Height: 0.67
+    Height: 0.4
     Spawners:
-    - Spawer: {fileID: 11400000, guid: 86b0630af638365409fb464a1067cffd, type: 2}
-      Probability: 0.367
+    - Spawer: {fileID: 11400000, guid: 40d8f6d1ee888664fb609822920dee8b, type: 2}
+      Probability: 0.1
+      MaxCount: -1
+    - Spawer: {fileID: 11400000, guid: 859dd50015b7f1247ba410b3fb67e8af, type: 2}
+      Probability: 0.02
+      MaxCount: -1
+    - Spawer: {fileID: 11400000, guid: b2a5cfb66d9d6014284c2022fa78ec5e, type: 2}
+      Probability: 0.02
       MaxCount: -1
   - TileConfig: {fileID: 11400000, guid: 541123d6632726e4cbd7d443ba77eb30, type: 2}
-    Height: 0.87
+    Height: 0.53
     Spawners:
-    - Spawer: {fileID: 11400000, guid: 07c795bb357550e4fa6832dc1ba6e6ab, type: 2}
-      Probability: 0.7
+    - Spawer: {fileID: 11400000, guid: 756fda7176bbc81489c1d2bbef904e9e, type: 2}
+      Probability: 0.4
+      MaxCount: -1
+    - Spawer: {fileID: 11400000, guid: b2a5cfb66d9d6014284c2022fa78ec5e, type: 2}
+      Probability: 0.005
       MaxCount: -1
   - TileConfig: {fileID: 11400000, guid: 3ee0bb21010a2964eaaaeaab6b0fcc9e, type: 2}
     Height: 1
     Spawners:
-    - Spawer: {fileID: 11400000, guid: 75660ec99309bc14a94df10d2e154353, type: 2}
-      Probability: 0.2
+    - Spawer: {fileID: 11400000, guid: 5a2b307fc21ed364581827e2fa1f9c14, type: 2}
+      Probability: 0.01
       MaxCount: -1
   Output: {fileID: 257278593}
   ChunkProvider: {fileID: 741563763}
-  RandomOffset: {x: -274312, y: -923957, z: 0}
+  RandomOffset: {x: 557832, y: 581711, z: 0}
   MainCamera: {fileID: 534669904}
-  RendererType: 1
+  RendererType: 0
+  AutoGenerate: 1
+  SortedShader: {fileID: 4800000, guid: cd1c1d01634d388469e7d178dceff71f, type: 3}
+  IndirectShader: {fileID: 4800000, guid: 6eba6c1426f28e94eb955608336a712a, type: 3}
 --- !u!114 &741563763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,67 +383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e954d977bc17d6c4bbef278b0def9368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RandomOffset: {x: -274312, y: -923957, z: 0}
+  RandomOffset: {x: 557832, y: 581711, z: 0}
   Generator: {fileID: 741563761}
   ChunkPrefab: {fileID: 5550527359518039109, guid: b62e4a3b34941e140b91725f38278b79, type: 3}
---- !u!1001 &946437971
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526400, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526414, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_Name
-      value: Bear
-      objectReference: {fileID: 0}
-    - target: {fileID: 7387233066748526402, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1f5aa8e73496de74ebc1779f9a251b3e, type: 3}

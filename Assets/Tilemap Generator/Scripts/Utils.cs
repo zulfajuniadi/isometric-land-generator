@@ -12,7 +12,7 @@ namespace TilemapGenerator
             Vector3[] vertices = new Vector3[resX * resY];
             for (int y = 0; y < resY; y++)
             {
-                float yPos = ((float) y / (resY - 1) - .5f) * length;
+                float yPos = (float) y / (resY - 1f) * length;
                 for (int x = 0; x < resX; x++)
                 {
                     float xPos = ((float) x / (resX - 1) - .5f) * width;

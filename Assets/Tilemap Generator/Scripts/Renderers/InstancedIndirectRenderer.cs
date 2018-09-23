@@ -18,18 +18,20 @@ namespace TilemapGenerator
         private HashSet<Vector4> instances = new HashSet<Vector4>();
         private Vector4[] instancesCache;
         private bool isDirty = false;
-        Vector3[] frustumCorners = new Vector3[4];
-        Bounds frustumBounds = new Bounds();
-        Camera mainCamera;
+        private Vector3[] frustumCorners = new Vector3[4];
+        private Bounds frustumBounds = new Bounds();
+        private Camera mainCamera;
 
-        public InstancedIndirectRenderer(Camera mainCamera, int capacity, Texture3D packedTexture, Material material, float meshSize)
+        public InstancedIndirectRenderer(Camera mainCamera, int capacity, Texture3D packedTexture, Shader shader, float meshSize)
         {
             this.mainCamera = mainCamera;
             this.packedTexture = packedTexture;
             float height = (float) packedTexture.width / (float) packedTexture.height * meshSize;
             float width = 1 * meshSize;
             this.mesh = Utils.CreatePlane(height, width);
-            this.material = Object.Instantiate(material);
+            this.material = new Material(shader);
+            this.material.renderQueue = 3000;
+            this.material.SetFloat("_TextureDepth", packedTexture.depth);
             this.material.SetTexture("_MainTex3D", packedTexture);
             if (capacity > 0)
             {
