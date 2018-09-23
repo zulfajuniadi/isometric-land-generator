@@ -40,7 +40,7 @@ namespace TilemapGenerator.Behaviours
             else if (isDragging)
             {
                 Vector3 currentPosition = Input.mousePosition;
-                transform.position += (lastPosition - currentPosition) * MainCamera.orthographicSize / 3f * Time.deltaTime;
+                transform.position += (lastPosition - currentPosition) * MainCamera.orthographicSize / 2f * Time.deltaTime;
                 lastPosition = currentPosition;
             }
         }
