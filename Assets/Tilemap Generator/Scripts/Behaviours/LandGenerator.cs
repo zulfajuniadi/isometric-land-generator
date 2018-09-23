@@ -82,7 +82,9 @@ namespace TilemapGenerator.Behaviours
             {
                 var tiles = new Dictionary<Vector4, TileBase>();
                 biome.TileConfig.GetCacheData(tiles);
-                CachedBiomes.Add(Mathf.Round(biome.Height * Height), new Tuple<int, Dictionary<Vector4, TileBase>>(biome.TileConfig.GetHashCode(), tiles));
+                float key = Mathf.Round(biome.Height * Height);
+                if (!CachedBiomes.ContainsKey(key))
+                    CachedBiomes.Add(key, new Tuple<int, Dictionary<Vector4, TileBase>>(biome.TileConfig.GetHashCode(), tiles));
                 foreach (var spawner in biome.Spawners)
                 {
                     if (spawner.Spawer == null) continue;
