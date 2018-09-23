@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59dd863f7c41a34a8d6ca8c42ad44d2, type: 3}
   m_Name: Water
   m_EditorClassIdentifier: 
+  Enabled: 1
+  OnFlat: 0
+  OnSlopes: 1
   Sprites:
   - {fileID: 21300038, guid: ff7e298d663e92441895ad009d280c89, type: 3}
   - {fileID: 21300040, guid: ff7e298d663e92441895ad009d280c89, type: 3}
@@ -19,6 +22,3 @@ MonoBehaviour:
   - {fileID: 21300044, guid: ff7e298d663e92441895ad009d280c89, type: 3}
   PackedTexture: {fileID: 11700000, guid: 3e608b042bea8f447910b3981f5ff1ec, type: 2}
   MeshSize: 1
-  OnFlat: 0
-  OnSlopes: 1
-  Material: {fileID: 2100000, guid: 76c5b912726b4c64fa99ffabded9f92d, type: 2}

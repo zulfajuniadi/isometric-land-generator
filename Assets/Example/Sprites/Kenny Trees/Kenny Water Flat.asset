@@ -15,7 +15,6 @@ MonoBehaviour:
   Enabled: 1
   OnFlat: 1
   OnSlopes: 0
-  Prefab: {fileID: 0}
   Sprites:
   - {fileID: 21300000, guid: 5786f19b69c48ff43941b1ff2198380b, type: 3}
   PackedTexture: {fileID: 11700000, guid: a37cf56869abd554da20f0f125666929, type: 2}

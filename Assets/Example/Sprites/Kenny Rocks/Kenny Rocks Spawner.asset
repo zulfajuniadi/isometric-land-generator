@@ -15,7 +15,6 @@ MonoBehaviour:
   Enabled: 1
   OnFlat: 1
   OnSlopes: 0
-  Prefab: {fileID: 0}
   Sprites:
   - {fileID: 21300000, guid: 62089430770950c4c9790161968875f8, type: 3}
   - {fileID: 21300002, guid: a783e1cdf63ab59449ec4cdd7b53b30a, type: 3}
