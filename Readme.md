@@ -1,6 +1,8 @@
 Unity Infinite Isometric Terrain Generator
 =================================
 
+**Test in your browser: [https://zulfajuniadi.github.io/isometric-land-generator/](https://zulfajuniadi.github.io/isometric-land-generator/)**
+
 > **Minimum required version is Unity 2018.3**. Will not work on older versions.
 
 [![Endless Terrain](https://i.gyazo.com/c23baacdebd93f8f02caa634cabcf5df.gif)](https://gyazo.com/c23baacdebd93f8f02caa634cabcf5df)
