@@ -8,6 +8,7 @@ namespace TilemapGenerator.Behaviours
     {
         public Camera MainCamera;
         public Vector2 MinMaxZoom = new Vector2(2, 15);
+        public float PanSpeed = 3f;
 
         private bool isDragging = false;
         private Vector2 lastPosition = Vector2.zero;
@@ -41,7 +42,7 @@ namespace TilemapGenerator.Behaviours
             {
                 Vector2 currentPosition = Input.mousePosition;
                 Vector2 normalizedDelta = (lastPosition - currentPosition) / (float) Screen.width;
-                transform.position += (Vector3) normalizedDelta * MainCamera.orthographicSize * 3f;
+                transform.position += (Vector3) normalizedDelta * MainCamera.orthographicSize * 3f * PanSpeed;
                 lastPosition = currentPosition;
             }
         }

@@ -508,6 +508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 534669904}
   MinMaxZoom: {x: 2, y: 15}
+  PanSpeed: 6
 --- !u!20 &534669904
 Camera:
   m_ObjectHideFlags: 0
@@ -915,7 +916,7 @@ MonoBehaviour:
   Output: {fileID: 257278593}
   ChunkProvider: {fileID: 741563763}
   MainCamera: {fileID: 534669904}
-  RendererType: 0
+  RendererType: 1
   AutoGenerate: 1
   RandomOffset: {x: 845433, y: 297675, z: 0}
   SortedShader: {fileID: 4800000, guid: cd1c1d01634d388469e7d178dceff71f, type: 3}
