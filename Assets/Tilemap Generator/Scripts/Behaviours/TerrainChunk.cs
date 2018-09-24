@@ -139,7 +139,7 @@ namespace TilemapGenerator.Behaviours
 
         private IEnumerator BuildMapGradual()
         {
-            var direction = (transform.position - Provider.transform.position).normalized;
+            var direction = (transform.position - Provider.Generator.MainCamera.transform.position).normalized;
             if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
             {
                 if (direction.x > 0)
