@@ -62,13 +62,14 @@ Shader "Instanced/InstancedIndirectShader" {
 
                 vertStruct o;
                 o.vertex = mul(UNITY_MATRIX_VP, float4(worldPosition, 1));
-                o.texcoord = float3(v.texcoord.x, v.texcoord.y , data.w);
+                o.texcoord = float3(v.texcoord.x, v.texcoord.y , data.w / 10.);
                 return o;
             }
 
             fixed4 frag (vertStruct IN) : SV_Target
             {
                 fixed4 c = Sample3DTexture (IN.texcoord);
+				c.rgb -= 0.25;
                 c.rgb *= c.a;
                 return c;
             }

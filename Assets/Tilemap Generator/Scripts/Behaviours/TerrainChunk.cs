@@ -81,6 +81,7 @@ namespace TilemapGenerator.Behaviours
             firstBiome.MoveNext();
             bottomHeight = Mathf.RoundToInt(firstBiome.Current.Key);
             bottomMinus1 = bottomHeight - 1;
+            Tilemap.GetComponent<TilemapRenderer>().sharedMaterial = Provider.Generator.TilemapMaterial;
         }
 
         public void Setup(Vector3Int mapPosition)
@@ -276,7 +277,7 @@ namespace TilemapGenerator.Behaviours
                             Vector4 worldPos = Provider.Generator.MapToWorld(new Vector3(rect.min.x + x, rect.min.y + y));
                             worldPos.y += c2 * 0.25f;
                             worldPos.z = worldPos.y * 0.1f;
-                            worldPos.w = index;
+                            worldPos.w = Mathf.Round(index * 10f);
                             spawnerPositions[item.Key].Add(worldPos);
                             tempSpawnerPositions[item.Key].Add(worldPos);
                         }

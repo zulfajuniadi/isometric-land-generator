@@ -3,7 +3,6 @@ Shader "Sprites/3D"
 	Properties
 	{
         _MainTex3D ("Albedo (RGB)", 3D) = "white" {}
-		_TextureOffset ("Texture Offset", Float) = 0
 	}
 	SubShader
 	{
@@ -24,6 +23,7 @@ Shader "Sprites/3D"
 			{
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
+				float2 uv2 : TEXCOORD1;
             };
 
             struct vertStruct
@@ -34,7 +34,6 @@ Shader "Sprites/3D"
 
             sampler3D _MainTex3D;
 			sampler2D _MainTex;
-			float _TextureOffset;
 
             fixed4 Sample3DTexture (float3 uv)
             {
@@ -46,7 +45,7 @@ Shader "Sprites/3D"
 			{
 				vertStruct o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.texcoord = float3(v.uv , _TextureOffset);
+				o.texcoord = float3(v.uv, v.uv2.x);
 				return o;
 			}
 			

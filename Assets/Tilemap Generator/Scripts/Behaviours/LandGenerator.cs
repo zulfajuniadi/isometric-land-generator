@@ -46,9 +46,11 @@ namespace TilemapGenerator.Behaviours
         public AnimationCurve TerrainCurve = new AnimationCurve();
         public BiomeConfig[] BiomeConfigs = new BiomeConfig[0];
         public Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>> CachedBiomes = new Dictionary<float, Tuple<int, Dictionary<Vector4, TileBase>>>();
+        public Material TilemapMaterial;
         public Transform Output;
         public ChunkProvider ChunkProvider;
         public Camera MainCamera;
+        public Camera MinimapCamera;
         public RendererType RendererType = RendererType.Unsorted;
         public bool AutoGenerate;
         [HideInInspector]
@@ -56,8 +58,6 @@ namespace TilemapGenerator.Behaviours
         [HideInInspector]
         public Shader SortedShader, IndirectShader;
         public Dictionary<int, ITileRenderer> CachedRenderers = new Dictionary<int, ITileRenderer>();
-
-        private Material rendererMaterial;
 
         private void OnEnable()
         {
@@ -68,6 +68,7 @@ namespace TilemapGenerator.Behaviours
                 QualitySettings.vSyncCount = 0;
             }
 #endif
+            Application.targetFrameRate = -1;
             Generate();
         }
 
@@ -112,18 +113,18 @@ namespace TilemapGenerator.Behaviours
             if (!CachedRenderers.ContainsKey(configuration.GetHashCode()))
             {
                 // webgl instancing broken on 2013.x
-#if UNITY_WEBGL
-                var renderer = new SortedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, SortedShader, configuration.MeshSize);
+#if UNITY_WEBGL && !UNITY_EDITOR
+                var renderer = new SortedRenderer(MainCamera, MinimapCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, SortedShader, configuration.MeshSize);
                 CachedRenderers.Add(configuration.GetHashCode(), renderer);
 #else
                 if (RendererType == RendererType.Sorted)
                 {
-                    var renderer = new SortedRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, SortedShader, configuration.MeshSize);
+                    var renderer = new SortedRenderer(MainCamera, MinimapCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, SortedShader, configuration.MeshSize);
                     CachedRenderers.Add(configuration.GetHashCode(), renderer);
                 }
                 else
                 {
-                    var renderer = new InstancedIndirectRenderer(MainCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, IndirectShader, configuration.MeshSize);
+                    var renderer = new InstancedIndirectRenderer(MainCamera, MinimapCamera, (int) (probability * ChunkSize * ChunkSize * ActiveTilemaps), configuration.PackedTexture, IndirectShader, configuration.MeshSize);
                     CachedRenderers.Add(configuration.GetHashCode(), renderer);
                 }
 #endif

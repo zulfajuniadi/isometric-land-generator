@@ -21,10 +21,12 @@ namespace TilemapGenerator
         private Vector3[] frustumCorners = new Vector3[4];
         private Bounds frustumBounds = new Bounds();
         private Camera mainCamera;
+        private Camera minimapCamera;
 
-        public InstancedIndirectRenderer(Camera mainCamera, int capacity, Texture3D packedTexture, Shader shader, float meshSize)
+        public InstancedIndirectRenderer(Camera mainCamera, Camera minimapCamera, int capacity, Texture3D packedTexture, Shader shader, float meshSize)
         {
             this.mainCamera = mainCamera;
+            this.minimapCamera = minimapCamera;
             this.packedTexture = packedTexture;
             float height = (float) packedTexture.width / (float) packedTexture.height * meshSize;
             float width = 1 * meshSize;
