@@ -16,16 +16,16 @@ RenderTexture:
   m_Height: 160
   m_AntiAliasing: 1
   m_DepthFormat: 0
-  m_ColorFormat: 2
-  m_MipMap: 1
+  m_ColorFormat: 0
+  m_MipMap: 0
   m_GenerateMips: 0
   m_SRGB: 0
   m_UseDynamicScale: 0
   m_BindMS: 0
   m_TextureSettings:
     serializedVersion: 2
-    m_FilterMode: 2
-    m_Aniso: 1
+    m_FilterMode: 0
+    m_Aniso: 0
     m_MipBias: 0
     m_WrapU: 1
     m_WrapV: 1
